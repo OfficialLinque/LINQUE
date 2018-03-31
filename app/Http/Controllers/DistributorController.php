@@ -25,7 +25,12 @@ class DistributorController extends Controller
      */
     public function index()
     {
-        return view('dproduct');
+
+      $temp = DB::table('items')
+              ->join('product', 'product.id', '=', 'items.prod_type')
+              ->select('items.*',  'items.name AS iname','product.name')
+              ->get();
+        return view('dproduct')->with(compact('temp'));
     }
     public function addproduct(Request $request)
     {

@@ -18,7 +18,7 @@
     <div class="container">
         <div class="row">
 
-
+          @foreach($temp as $a)
             <div class="col-md-4">
                 <div class="card mb-4 box-shadow text-light bg-dark">
                     <div class="text-center bg-white p-0">
@@ -26,7 +26,7 @@
                     </div>
                     <div class="card-body">
                         <p class="card-title lead">
-                            Lorem Ipsum Dolor Sit Amet
+                            {{ $a->iname }}
                         </p>
                         <p class="card-text">
                             This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
@@ -46,6 +46,7 @@
                     </div>
                 </div>
             </div>
+            @endforeach
             <!-- Modal -->
             <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editLongTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
