@@ -50,9 +50,6 @@ class DistributorController extends Controller
               $package->save();
             }
 
-
-
-
     }
     public function editproduct()
     {
