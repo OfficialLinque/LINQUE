@@ -1,9 +1,11 @@
 <?php
 
 namespace App\Http\Controllers;
-
 use Illuminate\Http\Request;
-
+use App\Http\Controllers\Controller;
+use App\item;
+use DB;
+use App\package;
 class DistributorController extends Controller
 {
     /**
@@ -25,10 +27,32 @@ class DistributorController extends Controller
     {
         return view('dproduct');
     }
-    public function addproduct()
-    {   
-        
-       
+    public function addproduct(Request $request)
+    {
+      $a = $request->dynamicValue;
+
+
+      $item = new item;
+            $item->name = $request->pname;
+            $item->quantity = $request->pquantity;
+            $item->prod_type = $request->ptype;
+            //$item->img = $request->pimg;
+             $item->img = 'test';
+            $item->save();
+
+  $temp = DB::select('select MAX(id) as "temp" FROM items');
+      $package = new package;
+            for($i=1;$i<=$a;$i++)
+            {
+              $package->product_id= $request-> $temp+1;
+              $package->description = $request->inpack.i;
+              $package->price = $request->inprice.i;
+              $package->save();
+            }
+
+
+
+
     }
     public function editproduct()
     {
