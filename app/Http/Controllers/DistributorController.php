@@ -37,10 +37,10 @@ class DistributorController extends Controller
             $item->quantity = $request->pquantity;
             $item->prod_type = $request->ptype;
             //$item->img = $request->pimg;
-             $item->img = $request->file('pimg');
+             $item->img = 'test';
             $item->save();
 
-  $temp = DB::select('select MAX(id) as "temp" FROM deliveries');
+  $temp = DB::select('select MAX(id) as "temp" FROM items');
       $package = new package;
             for($i=1;$i<=$a;$i++)
             {
