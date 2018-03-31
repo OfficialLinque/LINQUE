@@ -17,8 +17,10 @@
 <div class="album mt-4 py-5 bg-light">
     <div class="container">
         <div class="row">
-
-
+            <div id="app">
+                <example-component></example-component>
+            </div>
+            @foreach($items as $item)
             <div class="col-md-4">
                 <div class="card mb-4 box-shadow text-light bg-dark">
                     <div class="text-center bg-white p-0">
@@ -26,10 +28,11 @@
                     </div>
                     <div class="card-body">
                         <p class="card-title lead">
-                            Lorem Ipsum Dolor Sit Amet
+                            {{$item->name}}
                         </p>
                         <p class="card-text">
-                            This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            {{$item->description}}
+                        </p>
                         <div class="d-flex justify-content-between align-items-center ">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-outline-light"
@@ -41,11 +44,12 @@
                                 </button>
                                 <button type="button" class="btn btn-sm btn-outline-light"><i class="material-icons">delete</i></button>
                             </div>
-                            <small class="text-white">9 mins</small>
+                            <small class="text-white"><?php echo time_elapsed_string($item->created_at)?></small>
                         </div>
                     </div>
                 </div>
             </div>
+            @endforeach
             <!-- Modal -->
             <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editLongTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -290,7 +294,7 @@ $(document).ready(function() {
                       data: $('#uploadform').serialize(),
                       success: function(data){
                         //  swal("Success!", "Record has been added to database", "success")
-                        alert('hey');
+                            alert('hey');
                             $('#add').modal('hide');
                       },
                       error: function(data){

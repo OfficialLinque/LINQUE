@@ -25,34 +25,34 @@ class DistributorController extends Controller
      */
     public function index()
     {
-        return view('dproduct');
+        $items = item::orderBy('created_at', 'desc')->get();
+
+        return view('dproduct', compact('items'));
     }
     public function addproduct(Request $request)
     {
-      $a = $request->dynamicValue;
+            $a = $request->dynamicValue;
 
-
-      $item = new item;
+            $item = new item;
             $item->name = $request->pname;
             $item->quantity = $request->pquantity;
             $item->prod_type = $request->ptype;
-            //$item->img = $request->pimg;
-             $item->img = 'test';
-            $item->save();
+            $item->description = $request->pdesc;
+            $item->img = 'test';
+            $insert = $item->save();
 
-  $temp = DB::select('select MAX(id) as "temp" FROM items');
-      $package = new package;
+            echo json_encode($insert);
+
+            $temp = DB::select('select MAX(id) as "temp" FROM items');
+            $package = new package;
             for($i=1;$i<=$a;$i++)
             {
-              $package->product_id= $request-> $temp+1;
-              $package->description = $request->inpack.i;
-              $package->price = $request->inprice.i;
-              $package->save();
+                $package->product_id= $request->$temp+1;
+                $package->description = $request->inpack.i;
+                $package->price = $request->inprice.i;
+                $package->save();
             }
-
-
-
-
+            
     }
     public function editproduct()
     {
