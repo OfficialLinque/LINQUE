@@ -67,10 +67,31 @@
         <ul class="navbar-nav mr-auto">
             @yield('nav')
         </ul>
+        <ul class="navbar-nav ml-auto mr-3">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                Account
+                </a>
+                <div class="dropdown-menu py-0" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="#">
+                        <i class="material-icons">account_circle</i> My Profile
+                    </a>
+                    <div class="dropdown-divider my-1"></div>
+                    <a class="dropdown-item" href="{{ route('logout') }}" 
+                       onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
+                        <i class="material-icons">exit_to_app</i> Logout
+                    </a>
+                    <form id="frm-logout" action="{{ route('logout') }}" method="POST" style="display: none;">
+                        {{ csrf_field() }}
+                    </form>
+                </div>
+            </li>
+        </ul>
         <form class="form-inline my-2 my-lg-0">
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn bg-info text-white my-2 my-sm-0" type="submit">Enter</button>
         </form>
+        
     </div>
     </nav>
     @yield('body')
@@ -79,7 +100,9 @@
     <script src="https://unpkg.com/popper.js@1.12.6/dist/umd/popper.js" integrity="sha384-fA23ZRQ3G/J53mElWqVJEGJzU0sTs+SvzG8fXVWP+kJQ1lwFAOkcUOysnlKJC33U" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/bootstrap-material-design@4.1.1/dist/js/bootstrap-material-design.js" integrity="sha384-CauSuKpEqAFajSpkdjv3z9t8E7RlpJ1UP0lKM/+NdtSarroVKu069AlsRPKkFBz9" crossorigin="anonymous"></script>
     <script>$(document).ready(function() { $('body').bootstrapMaterialDesign(); });</script>
-
+    <script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz43XZBpKwAsWxokyUqFYcZuzlJKm3Y24&callback=initMap">
+    </script>
     @yield('script')
   </body>
 </html>

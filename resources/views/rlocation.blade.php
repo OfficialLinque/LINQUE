@@ -2,15 +2,17 @@
 
 @section('nav')
 <li class="nav-item dropdown">
-    <a class="nav-link" href="{{ route('product') }}">Product <span class="sr-only">(current)</span></a>
+    <a class="nav-link" href="{{ route('purchase') }}">Purchase <span class="sr-only">(current)</span></a>
+</li>
+<li class="nav-item dropdown ">
+    <a class="nav-link" href="{{ route('cart') }}">Cart <span class="sr-only">(current)</span></a>
 </li>
 <li class="nav-item dropdown">
-    <a class="nav-link" href="{{ route('order') }}">Orders <span class="sr-only">(current)</span></a>
+    <a class="nav-link" href="{{ route('transaction') }}">Transaction <span class="sr-only">(current)</span></a>
 </li>
 <li class="nav-item active">
     <a class="nav-link" >Location <span class="sr-only">(current)</span></a>
 </li>
-						
 @endsection
 
 @section('body')
@@ -38,4 +40,3 @@
       }
     </script>
 @endsection
-

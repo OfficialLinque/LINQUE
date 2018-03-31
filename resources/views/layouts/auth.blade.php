@@ -45,7 +45,7 @@
         };
 		window.onload = function(e)
         {
-            $(".se-pre-con").hide("slow");
+            $(".se-pre-con").fadeOut("slow");
         };
         
 	</script>
