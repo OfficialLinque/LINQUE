@@ -25,7 +25,7 @@ class DistributorController extends Controller
      */
     public function index()
     {
-        $items = item::orderBy('created_at', 'desc')->get();
+        $items = item::orderBy('created_at', 'desc')->simplePaginate(2);
 
         return view('dproduct', compact('items'));
     }
