@@ -11,3 +11,7 @@
     <a class="nav-link" >Location <span class="sr-only">(current)</span></a>
 </li>
 @endsection
+
+@section('body')
+
+@endsection

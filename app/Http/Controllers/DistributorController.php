@@ -40,6 +40,8 @@ class DistributorController extends Controller
     {
     }
 
+
+
     public function location()
     {
         return view('dlocation');
@@ -49,4 +51,6 @@ class DistributorController extends Controller
     {
         return view('dorder');
     }
+
+
 }
