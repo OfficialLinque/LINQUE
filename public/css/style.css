@@ -1,0 +1,10 @@
+.smprof{
+	background-color: aliceblue;
+    border-radius: 50%;
+}
+#auth{
+    display: block;
+} 
+#store, #owner{
+    display: none;    
+}  
