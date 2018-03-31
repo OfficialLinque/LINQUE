@@ -293,19 +293,10 @@ $(document).ready(function() {
                         //  swal("Success!", "Record has been added to database", "success")
                         alert('hey');
                             $('#add').modal('hide');
-                            iziToast.settings({
-    timeout: 10000,
-    resetOnHover: true,
-    icon: 'material-icons',
-    transitionIn: 'flipInX',
-    transitionOut: 'flipOutX',
-    onOpening: function(){
-        console.log('callback abriu!');
-    },
-    onClosing: function(){
-        console.log("callback fechou!");
-    }
-});
+                            iziToast.success({
+                        title: 'Add Complete',
+                        message: 'Item has been added to database'
+                    });
                       },
                       error: function(data){
                         //  swal("Oh no!", "Something went wrong, try again.", "error")

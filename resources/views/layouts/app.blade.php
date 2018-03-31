@@ -17,6 +17,7 @@
     <!-- LOADING STYLE & SCRIPT -->
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+   <link rel="stylesheet" href="{{ asset('assets/iziToast.min.css') }}">
     <style>
 		.no-js #loader {
 			display: none;
@@ -48,7 +49,7 @@
         {
             $(".se-pre-con").fadeOut("slow");
         };
-        
+
     </script>
     @yield('css')
   </head>
@@ -77,7 +78,7 @@
                         <i class="material-icons">account_circle</i> My Profile
                     </a>
                     <div class="dropdown-divider my-1"></div>
-                    <a class="dropdown-item" href="{{ route('logout') }}" 
+                    <a class="dropdown-item" href="{{ route('logout') }}"
                        onclick="event.preventDefault(); document.getElementById('frm-logout').submit();">
                         <i class="material-icons">exit_to_app</i> Logout
                     </a>
@@ -91,7 +92,7 @@
             <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
             <button class="btn bg-info text-white my-2 my-sm-0" type="submit">Enter</button>
         </form>
-        
+
     </div>
     </nav>
     @yield('body')
@@ -103,6 +104,7 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz43XZBpKwAsWxokyUqFYcZuzlJKm3Y24&callback=initMap">
     </script>
+    <script src="{{ asset('assets/iziToast.min.js') }}" type="text/javascript"></script>
     @yield('script')
   </body>
 </html>
