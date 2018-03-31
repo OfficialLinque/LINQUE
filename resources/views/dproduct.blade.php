@@ -18,7 +18,7 @@
     <div class="container">
         <div class="row">
 
-
+	@foreach($temp as $a)
             <div class="col-md-4">
                 <div class="card mb-4 box-shadow text-light bg-dark">
                     <div class="text-center bg-white p-0">
@@ -26,10 +26,10 @@
                     </div>
                     <div class="card-body">
                         <p class="card-title lead">
-                            Lorem Ipsum Dolor Sit Amet
+                            {{ $a->iname }}
                         </p>
                         <p class="card-text">
-                            This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
+                            {{ $a->mintext }}</p>
                         <div class="d-flex justify-content-between align-items-center ">
                             <div class="btn-group">
                                 <button type="button" class="btn btn-sm btn-outline-light"
@@ -46,6 +46,7 @@
                     </div>
                 </div>
             </div>
+            @endforeach
             <!-- Modal -->
             <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editLongTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -223,7 +224,7 @@
         </div>
         <div class="form-group  mb-2">
             <label for="desc" class="bmd-label-floating">Product Description</label>
-            <textarea class="form-control" name="pdesc" id="desc" rows="3"></textarea>
+            <textarea class="form-control" name="pdesc" id="pdesc" rows="3"></textarea>
         </div>
         <div class="form-group  mb-3">
             <label for="type" class="bmd-label-floating">Product Type</label>
@@ -292,6 +293,19 @@ $(document).ready(function() {
                         //  swal("Success!", "Record has been added to database", "success")
                         alert('hey');
                             $('#add').modal('hide');
+                            iziToast.settings({
+    timeout: 10000,
+    resetOnHover: true,
+    icon: 'material-icons',
+    transitionIn: 'flipInX',
+    transitionOut: 'flipOutX',
+    onOpening: function(){
+        console.log('callback abriu!');
+    },
+    onClosing: function(){
+        console.log("callback fechou!");
+    }
+});
                       },
                       error: function(data){
                         //  swal("Oh no!", "Something went wrong, try again.", "error")

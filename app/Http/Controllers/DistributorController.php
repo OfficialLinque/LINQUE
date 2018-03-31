@@ -25,7 +25,12 @@ class DistributorController extends Controller
      */
     public function index()
     {
-        return view('dproduct');
+
+          $temp= DB::table('items')
+            ->join('product', 'product.id', '=', 'items.prod_type')
+            ->select('items.*','items.name AS iname','product.name')
+            ->get();
+        return view('dproduct')->with(compact('temp'));
     }
     public function addproduct(Request $request)
     {
@@ -36,6 +41,7 @@ class DistributorController extends Controller
             $item->name = $request->pname;
             $item->quantity = $request->pquantity;
             $item->prod_type = $request->ptype;
+              $item->mintext = $request->pdesc;
             //$item->img = $request->pimg;
              $item->img = 'test';
             $item->save();
