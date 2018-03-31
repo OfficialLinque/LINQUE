@@ -18,7 +18,7 @@
     <div class="container">
         <div class="row">
 
-            
+
             <div class="col-md-4">
                 <div class="card mb-4 box-shadow text-light bg-dark">
                     <div class="text-center bg-white p-0">
@@ -61,7 +61,7 @@
                         </div>
                         <div class="input-group mb-2">
                             <input id="file" name="epimg"  hidden type="file" accept="image/*"/>
-                            <input type="button" class="btn btn-outline-primary btn-block" value="Upload Product Image" onclick="document.getElementById('file').click();" />    
+                            <input type="button" class="btn btn-outline-primary btn-block" value="Upload Product Image" onclick="document.getElementById('file').click();" />
                         </div>
                         <div class="row  mb-0">
                             <div class="col pr-1">
@@ -73,7 +73,7 @@
                             <div class="col pl-1">
                                 <div class="form-group">
                                     <label for="name" class="bmd-label-floating">Product Quantity</label>
-                                    <input type="text" name="epquantity" class="form-control" id="epquantity">
+                                    <input type="number" name="epquantity" class="form-control" id="epquantity">
                                 </div>
                             </div>
                         </div>
@@ -116,11 +116,11 @@
                         <div class="mb-2">
                             <p class="text-center text-primary lead" style="font-size: 15px;">Product Pack & Price</p>
                             <div id="EDITPPCOL" class="m-0">
-                                
+
                             </div>
-                            <input id="EDITPP" type="button" class="btn btn-outline-primary btn-block" value="Add Product Pack & Price" />    
+                            <input id="EDITPP" type="button" class="btn btn-outline-primary btn-block" value="Add Product Pack & Price" />
                         </div>
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -142,7 +142,7 @@
                         </div>
                     </div>
                     <div class="modal-body" style="height: 300px; overflow-y: scroll;">
-                        
+
                         <div class="row">
 
                             <!-- START FOR LOOP HERE -->
@@ -153,7 +153,7 @@
                                             <img src="img/coke.png" class="rounded img-fluid align-self-center">
                                         </div>
                                     </div>
-                                   
+
                                     <div class="col-8">
                                         <p class="my-1">Type: Type Here</p>
                                         <p class="my-1">Quantity: Quantity Here </p>
@@ -161,14 +161,14 @@
                                             <p class="my-1"><- Package - ></p>
                                             <p class="my-1"><- Price - > </p>
                                         </div>
-                                        
+
                                     </div>
                                     <p class="my-1"><- Description Here - ></p>
                                 </div>
                             </div>
 
                         </div>
-                        
+
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -176,13 +176,13 @@
                     </div>
                 </div>
             </div>
-            
-            
+
+
         </div>
     </div>
 </div>
 
-<button type="button" 
+<button type="button"
         style="position: fixed;right: 30px;bottom: 30px;"
         class="btn btn-primary bmd-btn-fab"
         data-toggle="modal"
@@ -199,24 +199,25 @@
       <div class="modal-body" style="height: 400px; overflow-y: scroll;">
         <form id="uploadform">
         <input type="hidden" name="_token" value="{{ csrf_token()}}">
+          <input type="hidden" name="dynamicValue" id="dynamicValue" >
         <div class="text-center mb-2">
-            <img id="fileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
+            <img id="fileimg" name="fileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
         </div>
         <div class="input-group mb-2">
-            <input id="file" name="pimg"  hidden type="file" accept="image/*"/>
-            <input type="button" class="btn btn-outline-primary btn-block" value="Upload Product Image" onclick="document.getElementById('file').click();" />    
+            <input id="pimg" name="pimg"  hidden type="file" accept="image/*"/>
+            <input type="button" class="btn btn-outline-primary btn-block" value="Upload Product Image" onclick="document.getElementById('file').click();" />
         </div>
         <div class="row  mb-0">
             <div class="col pr-1">
                 <div class="form-group">
                     <label for="name" class="bmd-label-floating">Product Name</label>
-                    <input type="text" name="pname" class="form-control" id="name">
+                    <input type="text" name="pname" class="form-control" id="pname">
                 </div>
             </div>
             <div class="col pl-1">
                 <div class="form-group">
                     <label for="name" class="bmd-label-floating">Product Quantity</label>
-                    <input type="text" name="pquantity" class="form-control" id="quantity">
+                    <input type="number" name="pquantity" class="form-control" id="pquantity">
                 </div>
             </div>
         </div>
@@ -226,7 +227,7 @@
         </div>
         <div class="form-group  mb-3">
             <label for="type" class="bmd-label-floating">Product Type</label>
-            <select id="type" class="form-control" name="ptype">
+            <select id="ptype" class="form-control" name="ptype">
                 <option selected hidden>Choose Type...</option>
                 <option value="1">Bakery and Bread</option>
                 <option value="2">Meat and Seafood</option>
@@ -255,20 +256,21 @@
                 <option value="23">Juice</option>
             </select>
         </div>
-        <form>
+
         <div class="mb-2">
             <p class="text-center text-primary lead" style="font-size: 15px;">Product Pack & Price</p>
             <div id="ADDPPCOL" class="m-0">
-                
+
             </div>
-            <input id="ADDPP" type="button" class="btn btn-outline-primary btn-block" value="Add Product Pack & Price" />    
+            <input id="ADDPP" type="button" class="btn btn-outline-primary btn-block" value="Add Product Pack & Price" />
         </div>
-        
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
         <button id="ADDPRODUCT" type="button" class="btn btn-primary">Add</button>
       </div>
+    </form>
     </div>
   </div>
 </div>
@@ -276,7 +278,30 @@
 
 @section('script')
 <script>
-    var a = 0; 
+    var a = 0;
+$(document).ready(function() {
+    $("#ADDPRODUCT").click(function(event) {
+              event.preventDefault();
+
+                  $.ajax({
+                      type: "POST",
+                      url: "{{ route('addproduct') }}",
+                      dataType: "text",
+                      data: $('#uploadform').serialize(),
+                      success: function(data){
+                        //  swal("Success!", "Record has been added to database", "success")
+                        alert('hey');
+                            $('#add').modal('hide');
+                      },
+                      error: function(data){
+                        //  swal("Oh no!", "Something went wrong, try again.", "error")
+                          alert('ho');
+                      }
+                  });
+
+              });
+
+                });
 
     $('#file').on('change', function () {
       readURL(this);
@@ -293,6 +318,7 @@
 
     $('#ADDPP').on('click', function () {
         a++;
+      console.log(a);
         ADDPPCOL();
     });
 
@@ -301,21 +327,25 @@
         $('#ADDPPCOL').append(
             '<div id="'+ a +'" class="row mb-2 parrow">' +
                 '<div id="package" class="col pr-2">' +
-                    '<input type="text" class="form-control" Placeholder="Package..." id="inpack">' +
+                    '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'">' +
                 '</div>' +
                 '<div id="price" class="col pl-0 pr-2">' +
-                    '<input type="text" class="form-control" Placeholder="Price..." id="inprice">' +
+                    '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'">' +
                 '</div>' +
                 '<div class="col pl-0">' +
                     '<input onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
                 '</div>'+
             '</div>'
         );
+
     }
-    
-    function REMOVECOL(a) {
-        $("#"+a).remove();
+
+    function REMOVECOL(c) {
+        $("#"+c).remove();
+        a=a-1;
+        $('#dynamicValue').val(a);
         console.log(a);
+
     }
 
 </script>
