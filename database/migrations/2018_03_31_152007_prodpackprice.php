@@ -14,7 +14,8 @@ class Prodpackprice extends Migration
     public function up()
     {
         Schema::create('prodpackprice', function (Blueprint $table) {
-            $table->increments('prodid');
+            $table->increments('prodpackpriceid');
+            $table->integer('prodid');
             $table->integer('prodprice');
             $table->string('prodpack');
             $table->rememberToken();
