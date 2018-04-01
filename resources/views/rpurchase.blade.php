@@ -41,7 +41,7 @@
                             <div  id="{{$product->id}}" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
                                 <div class="row w-100">
                                     <div class="col-6 text-center">
-                                        <p class="mb-2 text-uppercase">Pack</p>
+                                        <p class="mb-2 text-uppercase">Pack</p> 
                                     </div>
                                     <div class="col-6 text-center">
                                         <p class="mb-2 text-uppercase">Price</p>
