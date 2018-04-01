@@ -22,7 +22,7 @@
         <div class="row">
             @if($products)
                 @foreach($products as $product)
-                <div class="col-md-4">
+                <form class="col-md-4 product">
                     <div class="card mb-4 box-shadow text-light bg-dark">
                         <div class="text-center bg-white p-0">
                             <img style="height: 225px;" src="img/coke.png" class="rounded img-fluid">
@@ -31,7 +31,7 @@
                             <p class="card-title lead">
                                 {{$product->prodname}}
                             </p>
-                            <button class="btn btn-outline-primary text-white collapsed w-100" 
+                            <button type="button" class="btn btn-outline-primary text-white collapsed w-100" 
                                     data-toggle="collapse" 
                                     data-target="#{{$product->id}}" 
                                     aria-expanded="false" 
@@ -50,7 +50,8 @@
                                 @if($product->package)
                                     @foreach($product->package as $package)
                                         <div class="custom-control custom-radio my-1 ">
-                                            <input type="radio" id="package{{$package->id}}" name="radio" class="custom-control-input">
+                                            {{ csrf_field() }}
+                                            <input type="radio" id="package{{$package->id}}" name="package" class="custom-control-input" value="{{$package->id}}">
                                             <label class="custom-control-label w-100" for="package{{$package->id}}">
                                                 <div class="row w-100">
                                                     <div class="col-6">
@@ -68,14 +69,14 @@
                                     <div class="input-group-prepend">
                                         <span class="input-group-text text-white">Quantity : </span>
                                     </div>
-                                    <input type="text" class="ml-2 form-control text-white" value="{{$product->prodtotalquantity}}"></input>
+                                    <input type="text" class="ml-2 form-control text-white" name="quantity" value="{{$product->prodtotalquantity}}"></input>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-between align-items-center ">
                                 <div class="btn-group">
                                     <button type="button" class="btn btn-sm btn-outline-light prodinfo" data-id="{{$product->id}}">
                                             <i class="material-icons">info_outline</i></button>
-                                    <button type="button" class="btn btn-sm btn-outline-light addcart" data-id="{{$product->id}}">
+                                    <button type="submit" class="btn btn-sm btn-outline-light addcart" data-id="{{$product->id}}">
                                             <i class="material-icons">add_shopping_cart</i>
                                     </button>
                                 </div>
@@ -89,7 +90,7 @@
                             </div>
                         </div>
                     </div>
-                </div>
+                </form>
                 @endforeach
             @endif
             <!-- Modal -->
@@ -100,17 +101,13 @@
                         <div class="col-12">
                             <div class=row>
                                 <div class="col-12">
-                                    <h5 class="modal-title mb-3" id="exampleModalLongTitle">
-                                    Product Title
-                                    </h5>
+                                    <h5 class="modal-title mb-3" id="exampleModalLongTitle"><span class="prodname"></span></h5>
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <div class="modal-body " style="height: 300px; overflow-y: scroll;">
-                        
+                    <div class="modal-body" style="height: 300px; overflow-y: scroll;">
                         <div class="row">
-
                             <!-- START FOR LOOP HERE -->
                             <div class="col-12 border-bottom">
                                 <div class=row>
@@ -119,30 +116,24 @@
                                             <img src="img/coke.png" class="rounded img-fluid align-self-center">
                                         </div>
                                     </div>
-                                   
                                     <div class="col-8">
-                                        <p class="my-1">Type: Type Here</p>
-                                        <p class="my-1">Quantity: Quantity Here </p>
-                                        <div class="d-flex justify-content-between align-items-center ">
-                                            <p class="my-1"><- Package - ></p>
-                                            <p class="my-1"><- Price - > </p>
+                                        <p class="my-1">Type: <span class="prodtype">Type Here</span></p>
+                                        <p class="my-1">Quantity: <span class="prodqty">Quantity Here</span></p>
+                                        <div class="proddetails">
                                         </div>
-                                        
                                     </div>
-                                    <p class="my-1"><- Description Here - ></p>
+                                    <div class="col-12">
+                                        <p class="my-1">Description: <br><span class="proddesc"><- Description Here - ></span></p>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
-                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
-                    </div>
                 </div>
-            </div>
-                        
+            </div>                        
         </div>
     </div>
 </div>
@@ -190,8 +181,26 @@
             });
         });
         
-        $('button.addcart').click(function(e) {
-            alert($(this).data('id'));
+        $('form.product').submit(function(e) {
+            e.preventDefault();
+            var id = $(this).data('id');
+
+            $.ajax({
+                url: "{{route('cart_crud', 'add')}}",
+                method: "POST",
+                data: $(this).serialize(),
+                dataType: "json",
+                beforeSend: function() {
+                    $(".se-pre-con").css("opacity", '0.6');
+                    $(".se-pre-con").show("fast");
+                },
+                success: function(result) {
+                    $(".se-pre-con").fadeOut("slow");
+                },
+                error: function(err) {
+                    $(".se-pre-con").fadeOut("slow");
+                }
+            });
         });
     });
 </script>

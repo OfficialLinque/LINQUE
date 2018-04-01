@@ -18,7 +18,6 @@ class Prodpackprice extends Migration
             $table->integer('prodid');
             $table->integer('prodprice');
             $table->string('prodpack');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

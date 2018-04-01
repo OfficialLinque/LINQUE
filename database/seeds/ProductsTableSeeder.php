@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Database\Seeder;
+use Carbon\Carbon;
 
 class ProductsTableSeeder extends Seeder
 {
@@ -20,6 +21,8 @@ class ProductsTableSeeder extends Seeder
 				'proddesc' => 'Coca Cola product',
 				'prodtype' => 12,
 				'prodtotalquantity' => 300,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ),
 			1 => array (
                 'id' => 2,
@@ -29,6 +32,8 @@ class ProductsTableSeeder extends Seeder
 				'proddesc' => 'sardinas gud ni',
 				'prodtype' => 6,
 				'prodtotalquantity' => 200,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ),
 			2 => array (
                 'id' => 3,
@@ -38,6 +43,8 @@ class ProductsTableSeeder extends Seeder
 				'proddesc' => 'noodles',
 				'prodtype' => 3,
 				'prodtotalquantity' => 100,
+                'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
+                'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             )
         ));
     }
