@@ -26,10 +26,11 @@ class DistributorController extends Controller
     public function index()
     {
 
-          $temp= DB::table('items')
-            ->join('product', 'product.id', '=', 'items.prod_type')
-            ->select('items.*','items.name AS iname','product.name')
+            $temp= DB::table('items')
+            ->leftJoin('product', 'product.id', '=', 'items.prod_type')
+            ->select('items.*','items.name AS iname','items.id AS item',   'product.name')
             ->get();
+          //$temp = item::all();
         return view('dproduct')->with(compact('temp'));
     }
     public function addproduct(Request $request)
@@ -46,8 +47,8 @@ class DistributorController extends Controller
              $item->img = 'test';
             $item->save();
 
-  $temp = DB::select('select MAX(id) as "temp" FROM items');
-      $package = new package;
+            $temp = DB::select('select MAX(id) as "temp" FROM items');
+            $package = new package;
             for($i=1;$i<=$a;$i++)
             {
               $package->product_id= $request-> $temp+1;
@@ -57,11 +58,53 @@ class DistributorController extends Controller
             }
 
     }
-    public function editproduct()
+    public function editproduct(Request $request)
     {
+
+      $id = $request->input('id');
+      $item = item::find($id);
+      $output = array(
+      'id' =>$item->id,
+      'name' => $item->name,
+      'quantity' =>  $item->quantity,
+      'prod_type' => $item->prod_type,
+      'img' => $item->img,
+      'mintext' =>$item->mintext,
+      );
+      echo json_encode($output);
+
     }
-    public function deleteproduct()
+
+    public function editproduct1(Request $request)
     {
+
+            $a = $request->dynamicValue;
+            //$item = new item;
+            $id = $request->input('id');
+            $item = item::find($id);
+            $item->name = $request->epname;
+            $item->quantity = $request->epquantity;
+            $item->prod_type = $request->eptype;
+            $item->mintext = $request->epdesc;
+            //$item->img = $request->pimg;
+             $item->img = 'test1nakaedit';
+            $item->save();
+
+            $temp = DB::select('select MAX(id) as "temp" FROM items');
+            $package = new package;
+            for($i=1;$i<=$a;$i++)
+            {
+              $package->product_id= $request-> $temp+1;
+              $package->description = $request->inpack.i;
+              $package->price = $request->inprice.i;
+              $package->save();
+            }
+
+    }
+    public function deleteproduct(Request $request)
+    {
+      $item = item::find($request->input('id'));
+        $item->delete();
     }
     public function searchproduct()
     {

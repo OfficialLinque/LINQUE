@@ -17,7 +17,6 @@
 <div class="album mt-4 py-5 bg-light">
     <div class="container">
         <div class="row">
-
 	@foreach($temp as $a)
             <div class="col-md-4">
                 <div class="card mb-4 box-shadow text-light bg-dark">
@@ -32,14 +31,12 @@
                             {{ $a->mintext }}</p>
                         <div class="d-flex justify-content-between align-items-center ">
                             <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-light"
-                                        data-toggle="modal" data-target="#moreinfo">
+                                <button type="button" id="{{ $a->item }}" class="btn btn-sm btn-outline-light info1">
                                         <i class="material-icons">info_outline</i></button>
-                                <button type="button" class="btn btn-sm btn-outline-light"
-                                        data-toggle="modal" data-target="#edit">
+                                <button type="button" id="{{ $a->item }}" class="btn btn-sm btn-outline-light edit1" >
                                         <i class="material-icons">edit</i>
                                 </button>
-                                <button type="button" class="btn btn-sm btn-outline-light"><i class="material-icons">delete</i></button>
+                                <button type="button" id="{{ $a->item }}" class="btn btn-sm btn-outline-light delete1"><i class="material-icons">delete</i></button>
                             </div>
                             <small class="text-white">9 mins</small>
                         </div>
@@ -48,15 +45,18 @@
             </div>
             @endforeach
             <!-- Modal -->
-            <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editLongTitle" aria-hidden="true">
+            <div class="modal fade" id="edit1" tabindex="-1" role="dialog" aria-labelledby="editLongTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title" id="editLongTitle">Edit Product</h5>
                     </div>
                     <div class="modal-body" style="height: 400px; overflow-y: scroll;">
-                        <form id="uploadform">
+                        <form id="uploadform1">
                         <input type="hidden" name="_token" value="{{ csrf_token()}}">
+                        <input type="hidden" name="dynamicValue" id="dynamicValue" >
+                        <input type="hidden" name="id" id="id"  >
+
                         <div class="text-center mb-2">
                             <img id="epfileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
                         </div>
@@ -84,7 +84,7 @@
                         </div>
                         <div class="form-group  mb-3">
                             <label for="type" class="bmd-label-floating">Product Type</label>
-                            <select id="type" class="form-control" name="eptype">
+                            <select id="etype" class="form-control" name="eptype">
                                 <option selected hidden>Choose Type...</option>
                                 <option value="1">Bakery and Bread</option>
                                 <option value="2">Meat and Seafood</option>
@@ -113,7 +113,7 @@
                                 <option value="23">Juice</option>
                             </select>
                         </div>
-                        <form>
+
                         <div class="mb-2">
                             <p class="text-center text-primary lead" style="font-size: 15px;">Product Pack & Price</p>
                             <div id="EDITPPCOL" class="m-0">
@@ -125,8 +125,9 @@
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="EDITDPRODUCT" type="button" class="btn btn-primary">Edit</button>
+                        <button id="EDITPRODUCT" type="button" class="btn btn-primary">Edit</button>
                     </div>
+                  </form>
                     </div>
                 </div>
             </div>
@@ -137,7 +138,7 @@
                         <div class="col-12">
                             <div class=row>
                                 <div class="col-12">
-                                    <h5 class="modal-title mb-3" id="exampleModalLongTitle">Lorem Ipsum Dolor Sit Amet</h5>
+                                    <h5 class="modal-title mb-3" id="tanginamo">Lorem Ipsum Dolor Sit Amet</h5>
                                 </div>
                             </div>
                         </div>
@@ -156,15 +157,15 @@
                                     </div>
 
                                     <div class="col-8">
-                                        <p class="my-1">Type: Type Here</p>
-                                        <p class="my-1">Quantity: Quantity Here </p>
+                                        <p  class="my-1" id="tanginamo1">Type: Type Here</p>
+                                        <p class="my-1" id="tanginamo2">Quantity: Quantity Here </p>
                                         <div class="d-flex justify-content-between align-items-center ">
                                             <p class="my-1"><- Package - ></p>
                                             <p class="my-1"><- Price - > </p>
                                         </div>
 
                                     </div>
-                                    <p class="my-1"><- Description Here - ></p>
+                                    <p class="my-1" id="tanginamo3"><- Description Here - ></p>
                                 </div>
                             </div>
 
@@ -281,6 +282,64 @@
 <script>
     var a = 0;
 $(document).ready(function() {
+
+  $(document).on('click', '.delete1', function(){
+              var id = $(this).attr('id');
+              iziToast.show({
+                  theme: 'dark',
+                  icon: 'icon-person',
+                  title: 'Warning',
+                  message: 'Are you sure?',
+                  position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+                  progressBarColor: 'rgb(0, 255, 184)',
+                  buttons: [
+                      ['<button>Ok</button>', function (instance, toast) {
+
+                        $.ajax({
+                            url:"{{ route('deleteproduct') }}",
+                            method: "get",
+                            data:{id:id},
+                            success:function(data){
+                              instance.hide({
+                                  transitionOut: 'fadeOutUp',
+                                  onClosing: function(instance, toast, closedBy){
+                                      console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
+                                  }
+                              }, toast, 'buttonName');
+
+
+
+                              iziToast.success({
+                          title: 'Delete Complete',
+                          position: 'topCenter',
+                          message: 'Item has been added to database'
+                      });
+                            }
+                        })
+
+                      }, true], // true to focus
+                      ['<button>Close</button>', function (instance, toast) {
+                          instance.hide({
+                              transitionOut: 'fadeOutUp',
+                              onClosing: function(instance, toast, closedBy){
+                                  console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
+                              }
+                          }, toast, 'buttonName');
+                      }]
+                  ],
+                  onOpening: function(instance, toast){
+                      console.info('callback abriu!');
+                  },
+                  onClosing: function(instance, toast, closedBy){
+                      console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
+                  }
+              });
+          });
+          //USE
+
+
+
+
     $("#ADDPRODUCT").click(function(event) {
               event.preventDefault();
 
@@ -291,10 +350,11 @@ $(document).ready(function() {
                       data: $('#uploadform').serialize(),
                       success: function(data){
                         //  swal("Success!", "Record has been added to database", "success")
-                        alert('hey');
+                        //alert('hey');
                             $('#add').modal('hide');
                             iziToast.success({
                         title: 'Add Complete',
+                        position: 'topCenter',
                         message: 'Item has been added to database'
                     });
                       },
@@ -306,6 +366,76 @@ $(document).ready(function() {
 
               });
 
+
+              $("#EDITPRODUCT").click(function(event) {
+                        event.preventDefault();
+
+                            $.ajax({
+                                type: "POST",
+                                url: "{{ route('editproduct1') }}",
+                                dataType: "text",
+                                data: $('#uploadform1').serialize(),
+                                success: function(data){
+                                  //  swal("Success!", "Record has been added to database", "success")
+                                  alert('hey');
+                                      $('#edit1').modal('hide');
+                                      iziToast.success({
+                                  title: 'Edit Complete',
+                                  position: 'topCenter',
+                                  message: 'Item has been added to database'
+                              });
+                                },
+                                error: function(data){
+                                  //  swal("Oh no!", "Something went wrong, try again.", "error")
+                                    alert('ho');
+                                }
+                            });
+
+                        });
+
+
+
+              $(document).on('click', '.edit1', function(){
+                var id = $(this).attr("id");
+                $.ajax({
+                  url:"{{ route('editproduct') }}",
+                  method: 'get',
+                  data:{id:id},
+                  dataType:'json',
+                  success:function(data){
+                    //$('#button_action').val('update');
+                    $('#id').val(id);
+                    $('#epname').val(data.name);
+                    $('#epquantity').val(data.quantity);
+                    $('#etype').val(data.prod_type);
+                    $('#epdesc').val(data.mintext);
+                    $('#edit1').modal('show');
+
+                  }
+                })
+});
+
+
+$(document).on('click', '.info1', function(){
+  var id = $(this).attr("id");
+  $.ajax({
+    url:"{{ route('editproduct') }}",
+    method: 'get',
+    data:{id:id},
+    dataType:'json',
+    success:function(data){
+      //$('#button_action').val('update');
+    //  $('#id').val(id);
+      $('#tanginamo').text(data.name);
+      $('#tanginamo2').text("Quantity: "+data.quantity);
+      $('#tanginamo1').text("Type: "+data.prod_type);
+      $('#tanginamo3').text("Description: "+data.mintext);
+      $('#moreinfo').modal('show');
+
+    }
+  });
+
+  });
                 });
 
     $('#file').on('change', function () {
@@ -327,6 +457,12 @@ $(document).ready(function() {
         ADDPPCOL();
     });
 
+    $('#EDITPP').on('click', function () {
+        a++;
+      console.log(a);
+        EDITPPCOL();
+    });
+
     function ADDPPCOL() {
 
         $('#ADDPPCOL').append(
@@ -344,6 +480,27 @@ $(document).ready(function() {
         );
 
     }
+
+    function EDITPPCOL() {
+
+        $('#EDITPPCOL').append(
+            '<div id="'+ a +'" class="row mb-2 parrow">' +
+                '<div id="package" class="col pr-2">' +
+                    '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'">' +
+                '</div>' +
+                '<div id="price" class="col pl-0 pr-2">' +
+                    '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'">' +
+                '</div>' +
+                '<div class="col pl-0">' +
+                    '<input onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
+                '</div>'+
+            '</div>'
+        );
+
+    }
+
+
+
 
     function REMOVECOL(c) {
         $("#"+c).remove();
