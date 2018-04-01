@@ -287,6 +287,8 @@ $(document).ready(function() {
     $("#ADDPRODUCT").click(function(event) {
               event.preventDefault();
 
+              console.log($('#uploadform').serialize());
+
                   $.ajax({
                       type: "POST",
                       url: "{{ route('addproduct') }}",

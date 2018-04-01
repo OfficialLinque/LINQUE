@@ -29,21 +29,20 @@ class DistributorController extends Controller
 
         return view('dproduct', compact('items'));
     }
+
     public function addproduct(Request $request)
     {
-            $a = $request->dynamicValue;
+        $a = $request->dynamicValue;
 
-            $item = new item;
-            $item->name = $request->pname;
-            $item->quantity = $request->pquantity;
-            $item->prod_type = $request->ptype;
-            $item->description = $request->pdesc;
-            $item->img = 'test';
-            $insert = $item->save();
+        $item = new item;
+        $item->name = $request->pname;
+        $item->quantity = $request->pquantity;
+        $item->prod_type = $request->ptype;
+        $item->description = $request->pdesc;
+        $item->img = 'test';
+        $insert = $item->save();
 
-            echo json_encode($insert);
-
-            $temp = DB::select('select MAX(id) as "temp" FROM items');
+        if($insert) {
             $package = new package;
             for($i=1;$i<=$a;$i++)
             {
@@ -52,7 +51,7 @@ class DistributorController extends Controller
                 $package->price = $request->inprice.i;
                 $package->save();
             }
-            
+        }            
     }
     public function editproduct()
     {
