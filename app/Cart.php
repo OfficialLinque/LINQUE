@@ -14,4 +14,12 @@ class Cart extends Model
     protected $fillable = [
         'buyerid', 'prodpackid', 'prodquantity',
     ];
+
+    public function buyer() {
+        return $this->hasOne('App\User', 'id', 'buyerid');
+    }
+
+    public function package() {
+        return $this->hasOne('App\ProductPackage', 'id', 'prodpackid');
+    }
 }

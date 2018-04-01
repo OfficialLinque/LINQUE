@@ -13,4 +13,8 @@ class Product extends Model
     public function package() {
         return $this->hasMany('App\ProductPackage', 'prodid', 'id');
     }
+
+    public function seller() {
+        return $this->hasOne('App\User', 'id', 'sellerid');
+    }
 }
