@@ -16,7 +16,7 @@ class AddForeignKeyToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {                
             $table->integer('strtype')->unsigned()->change();
             $table->foreign('strtype')
-                ->references('strid')
+                ->references('id')
                 ->on('storetypes')
                 ->onDelete('cascade');
         });

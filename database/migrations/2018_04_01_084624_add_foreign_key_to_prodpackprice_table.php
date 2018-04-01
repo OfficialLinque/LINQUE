@@ -14,10 +14,9 @@ class AddForeignKeyToProdpackpriceTable extends Migration
     public function up()
     {
         Schema::table('prodpackprice', function (Blueprint $table) {
-            $table->renameColumn('prodid', 'id');
-            $table->integer('product_id')->unsigned();
-            $table->foreign('product_id')
-                ->references('prodid')
+            $table->integer('prodid')->unsigned()->change();
+            $table->foreign('prodid')
+                ->references('id')
                 ->on('products')
                 ->onDelete('cascade');
         });
@@ -31,7 +30,7 @@ class AddForeignKeyToProdpackpriceTable extends Migration
     public function down()
     {
         Schema::table('prodpackprice', function (Blueprint $table) {
-            $table->dropForeign(['product_id']);
+            $table->dropForeign(['prodid']);
         });
     }
 }

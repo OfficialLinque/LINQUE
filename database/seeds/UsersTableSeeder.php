@@ -32,7 +32,7 @@ class UsersTableSeeder extends Seeder
                 'email' => 'distributor@gmail.com',
                 'password' => bcrypt('distributor'),
                 'strname' => 'distributor',
-                'strtype' => 1,
+                'strtype' => 2,
                 'strlocation' => '7.043133300000001,125.57429599999999',
                 'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),

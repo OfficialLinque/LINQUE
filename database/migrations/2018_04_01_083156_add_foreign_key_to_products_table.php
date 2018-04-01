@@ -21,7 +21,7 @@ class AddForeignKeyToProductsTable extends Migration
                 ->onDelete('cascade');       
             $table->integer('prodtype')->unsigned()->change();
             $table->foreign('prodtype')
-                ->references('prodid')
+                ->references('id')
                 ->on('producttypes')
                 ->onDelete('cascade');
         });
