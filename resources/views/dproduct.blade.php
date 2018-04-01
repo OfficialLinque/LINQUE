@@ -31,7 +31,7 @@
                             {{ $a->proddesc }}</p>
                         <div class="d-flex justify-content-between align-items-center ">
                             <div class="btn-group">
-                                <button type="button" id="{{ $a->item }}" class="btn btn-sm btn-outline-light info1">
+                                <button type="button" id="{{ $a->item }}" name="{{ $a->proddesc }}" class="btn btn-sm btn-outline-light info1">
                                         <i class="material-icons">info_outline</i></button>
                                 <button type="button" id="{{ $a->item }}" class="btn btn-sm btn-outline-light edit1" >
                                         <i class="material-icons">edit</i>
@@ -56,6 +56,7 @@
                         <input type="hidden" name="_token" value="{{ csrf_token()}}">
                         <input type="hidden" name="dynamicValue" id="dynamicValue" >
                         <input type="hidden" name="id" id="id"  >
+                        <input type="hidden" name="id1" id="id1"  >
 
                         <div class="text-center mb-2">
                             <img id="epfileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
@@ -133,6 +134,9 @@
             </div>
             <div class="modal fade" id="moreinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
+
+
+                </form>
                     <div class="modal-content">
                     <div class="modal-header border-bottom pb-1">
                         <div class="col-12">
@@ -403,6 +407,7 @@ $(document).ready(function() {
                   success:function(data){
                     //$('#button_action').val('update');
                     $('#id').val(id);
+                    $('#id1').val(data.prodtype);
                     $('#epname').val(data.prodname);
                     $('#epquantity').val(data.prodtotalquantity);
                     $('#etype').val(data.prodtype);
@@ -416,16 +421,17 @@ $(document).ready(function() {
 
                 $(document).on('click', '.info1', function(){
                   var id = $(this).attr("id");
+                  var id1  =    $('#id1').val();
                   $.ajax({
                     url:"{{ route('editproduct') }}",
                     method: 'get',
                     data:{id:id},
                     dataType:'json',
                     success:function(data){
-
-                      $('#tanginamo').text(data.name);
+                    //  alert(data.prodtype);
+                      $('#tanginamo').text(data.prodname);
                       $('#tanginamo2').text("Quantity: "+data.prodtotalquantity);
-                      $('#tanginamo1').text("Type: "+data.prodtype);
+                      $('#tanginamo1').text("Type: "+data.prodtype1.prodtype);
                       $('#tanginamo3').text("Description: "+data.proddesc);
                       $('#moreinfo').modal('show');
 

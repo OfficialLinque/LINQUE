@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\item;
+use App\producttypes;
 use Auth;
 use DB;
 use App\package;
@@ -63,12 +64,17 @@ class DistributorController extends Controller
     {
 
       $id = $request->input('id');
+      $id1 = $request->input('id1');
       $item = item::find($id);
+      $item1 = producttypes::find( $item->prodtype);
+      //$item1 = DB::table('producttypes')->where('prodid', "=", $a);
+
       $output = array(
       //'id' =>$item->id,
       'prodname' => $item->prodname,
       'prodtotalquantity' =>  $item->prodtotalquantity,
-      'prodtype' => $item->prodtype,
+      'prodtype' =>  $item->prodtype,
+     'prodtype1' =>  $item1,
       'prodimg' => $item->prodimg,
       'proddesc' =>$item->proddesc,
       );
