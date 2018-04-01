@@ -28,7 +28,7 @@
                             {{ $a->iname }}
                         </p>
                         <p class="card-text">
-                            {{ $a->mintext }}</p>
+                            {{ $a->proddesc }}</p>
                         <div class="d-flex justify-content-between align-items-center ">
                             <div class="btn-group">
                                 <button type="button" id="{{ $a->item }}" class="btn btn-sm btn-outline-light info1">
@@ -289,7 +289,7 @@ $(document).ready(function() {
                   theme: 'dark',
                   icon: 'icon-person',
                   title: 'Warning',
-                  message: 'Are you sure?',
+                  message: 'Are you sure? (Changes beyond here are cannot be undone.)',
                   position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
                   progressBarColor: 'rgb(0, 255, 184)',
                   buttons: [
@@ -307,15 +307,13 @@ $(document).ready(function() {
                                   }
                               }, toast, 'buttonName');
 
-
-
                               iziToast.success({
-                          title: 'Delete Complete',
-                          position: 'topCenter',
-                          message: 'Item has been added to database'
-                      });
+                                title: 'Delete Complete',
+                                position: 'topCenter',
+                                message: 'Product removed from database.'
+                              });
                             }
-                        })
+                          })
 
                       }, true], // true to focus
                       ['<button>Close</button>', function (instance, toast) {
@@ -351,8 +349,8 @@ $(document).ready(function() {
                       success: function(data){
                         //  swal("Success!", "Record has been added to database", "success")
                         //alert('hey');
-                            $('#add').modal('hide');
-                            iziToast.success({
+                        $('#add').modal('hide');
+                        iziToast.success({
                         title: 'Add Complete',
                         position: 'topCenter',
                         message: 'Item has been added to database'
@@ -377,12 +375,12 @@ $(document).ready(function() {
                                 data: $('#uploadform1').serialize(),
                                 success: function(data){
                                   //  swal("Success!", "Record has been added to database", "success")
-                                  alert('hey');
-                                      $('#edit1').modal('hide');
-                                      iziToast.success({
+                              //    alert('hey');
+                                  $('#edit1').modal('hide');
+                                  iziToast.success({
                                   title: 'Edit Complete',
                                   position: 'topCenter',
-                                  message: 'Item has been added to database'
+                                  message: 'Item is now up to date!'
                               });
                                 },
                                 error: function(data){
@@ -405,99 +403,98 @@ $(document).ready(function() {
                   success:function(data){
                     //$('#button_action').val('update');
                     $('#id').val(id);
-                    $('#epname').val(data.name);
-                    $('#epquantity').val(data.quantity);
-                    $('#etype').val(data.prod_type);
-                    $('#epdesc').val(data.mintext);
+                    $('#epname').val(data.prodname);
+                    $('#epquantity').val(data.prodtotalquantity);
+                    $('#etype').val(data.prodtype);
+                    $('#epdesc').val(data.proddesc);
                     $('#edit1').modal('show');
 
                   }
                 })
-});
+              });
 
 
-$(document).on('click', '.info1', function(){
-  var id = $(this).attr("id");
-  $.ajax({
-    url:"{{ route('editproduct') }}",
-    method: 'get',
-    data:{id:id},
-    dataType:'json',
-    success:function(data){
-      //$('#button_action').val('update');
-    //  $('#id').val(id);
-      $('#tanginamo').text(data.name);
-      $('#tanginamo2').text("Quantity: "+data.quantity);
-      $('#tanginamo1').text("Type: "+data.prod_type);
-      $('#tanginamo3').text("Description: "+data.mintext);
-      $('#moreinfo').modal('show');
+                $(document).on('click', '.info1', function(){
+                  var id = $(this).attr("id");
+                  $.ajax({
+                    url:"{{ route('editproduct') }}",
+                    method: 'get',
+                    data:{id:id},
+                    dataType:'json',
+                    success:function(data){
 
-    }
-  });
+                      $('#tanginamo').text(data.name);
+                      $('#tanginamo2').text("Quantity: "+data.prodtotalquantity);
+                      $('#tanginamo1').text("Type: "+data.prodtype);
+                      $('#tanginamo3').text("Description: "+data.proddesc);
+                      $('#moreinfo').modal('show');
 
-  });
+                    }
+                  });
+
+                });
                 });
 
-    $('#file').on('change', function () {
-      readURL(this);
-    });
-    function readURL(input) {
-        if (input.files && input.files[0]) {
-            var reader = new FileReader();
-            reader.onload = function (e) {
-            $('#fileimg').attr('src', e.target.result);
-            }
-            reader.readAsDataURL(input.files[0]);
-        }
-    }
+                $('#file').on('change', function () {
+                  readURL(this);
+                });
+                function readURL(input) {
+                  if (input.files && input.files[0]) {
+                    var reader = new FileReader();
+                    reader.onload = function (e) {
+                      $('#fileimg').attr('src', e.target.result);
+                    }
+                    reader.readAsDataURL(input.files[0]);
+                  }
+                }
 
-    $('#ADDPP').on('click', function () {
-        a++;
-      console.log(a);
-        ADDPPCOL();
-    });
+                $('#ADDPP').on('click', function () {
+                  a++;
+                  console.log(a);
+                  ADDPPCOL();
+                });
 
-    $('#EDITPP').on('click', function () {
-        a++;
-      console.log(a);
-        EDITPPCOL();
-    });
+                $('#EDITPP').on('click', function () {
+                  a++;
+                  console.log(a);
+                  EDITPPCOL();
+                });
 
-    function ADDPPCOL() {
+                function ADDPPCOL() {
 
-        $('#ADDPPCOL').append(
-            '<div id="'+ a +'" class="row mb-2 parrow">' +
-                '<div id="package" class="col pr-2">' +
-                    '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'">' +
-                '</div>' +
-                '<div id="price" class="col pl-0 pr-2">' +
-                    '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'">' +
-                '</div>' +
-                '<div class="col pl-0">' +
-                    '<input onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
-                '</div>'+
-            '</div>'
-        );
+                  $('#ADDPPCOL').append(
+                    '<div id="'+ a +'" class="row mb-2 parrow">' +
+                    '<div id="package" class="col pr-2">' +
+                      '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'">' +
+                      '</div>' +
+                      '<div id="price" class="col pl-0 pr-2">' +
+                      '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'">' +
+                      '</div>' +
+                      '<div class="col pl-0">' +
+                      '<input onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
+                      '</div>'+
+                      '</div>'
+                    );
 
-    }
+                  }
 
-    function EDITPPCOL() {
+                  function EDITPPCOL() {
 
-        $('#EDITPPCOL').append(
-            '<div id="'+ a +'" class="row mb-2 parrow">' +
-                '<div id="package" class="col pr-2">' +
-                    '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'">' +
-                '</div>' +
-                '<div id="price" class="col pl-0 pr-2">' +
-                    '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'">' +
-                '</div>' +
-                '<div class="col pl-0">' +
-                    '<input onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
-                '</div>'+
-            '</div>'
-        );
+                    $('#EDITPPCOL').append(
+                      '<div id="'+ a +'" class="row mb-2 parrow">' +
+                      '<div id="package" class="col pr-2">' +
+                      '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'">' +
+                      '</div>' +
+                      '<div id="price" class="col pl-0 pr-2">' +
+                      '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'">' +
+                      '</div>' +
+                      '<div class="col pl-0">' +
+                      '<input onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
+                      '</div>'+
+                      '</div>'
+                    );
 
-    }
+                  }
 
 
 

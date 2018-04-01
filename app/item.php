@@ -6,12 +6,14 @@ use Illuminate\Database\Eloquent\Model;
 
 class item extends Model
 {
-  protected $primaryKey = 'id';
-protected $table = 'items';
+  protected $primaryKey = 'prodid';
+protected $table = 'products';
 protected $fillable = array(
-  'name',
-  'quantity',
-  'prod_type',
-  'img',
+  'prodname',
+  'prodtotalquantity',
+  'prodtype',
+  'proddesc',
+  'sellerid',
+  'prodimg',
 );
 }
