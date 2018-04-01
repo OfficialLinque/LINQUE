@@ -18,34 +18,43 @@
     <div class="container">
         <div class="row">
 
-
-            <div class="col-md-4">
-                <div class="card mb-4 box-shadow text-light bg-dark">
-                    <div class="text-center bg-white p-0">
-                        <img style="height: 225px;" src="img/coke.png" class="rounded img-fluid">
-                    </div>
-                    <div class="card-body">
-                        <p class="card-title lead">
-                            Lorem Ipsum Dolor Sit Amet
-                        </p>
-                        <p class="card-text">
-                            This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                        <div class="d-flex justify-content-between align-items-center ">
-                            <div class="btn-group">
-                                <button type="button" class="btn btn-sm btn-outline-light"
-                                        data-toggle="modal" data-target="#moreinfo">
-                                        <i class="material-icons">info_outline</i></button>
-                                <button type="button" class="btn btn-sm btn-outline-light"
-                                        data-toggle="modal" data-target="#edit">
+            @if($products)
+                @foreach($products as $product)
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow text-light bg-dark">
+                        <div class="text-center bg-white p-0">
+                            <img style="height: 225px;" src="img/coke.png" class="rounded img-fluid">
+                        </div>
+                        <div class="card-body">
+                            <p class="card-title lead">
+                            {{$product->prodname}}
+                            </p>
+                            <p class="card-text">
+                            {{$product->proddesc}}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <div class="btn-group">
+                                    <button type="button" class="btn btn-sm btn-outline-light product_info" data-id="{{$product->id}}">
+                                        <i class="material-icons">info_outline</i>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-light product_edit" data-id="{{$product->id}}">
                                         <i class="material-icons">edit</i>
-                                </button>
-                                <button type="button" class="btn btn-sm btn-outline-light"><i class="material-icons">delete</i></button>
+                                    </button>
+                                    <button type="button" class="btn btn-sm btn-outline-light product_delete" data-id="{{$product->id}}"><i class="material-icons">delete</i></button>
+                                </div>
+                                <small class="text-white">
+                                @if($product->created_at)
+                                    {{time_elapsed_string($product->created_at)}}
+                                @else
+                                    null
+                                @endif
+                                </small>
                             </div>
-                            <small class="text-white">9 mins</small>
                         </div>
                     </div>
                 </div>
-            </div>
+                @endforeach
+            @endif
             <!-- Modal -->
             <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editLongTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -136,15 +145,13 @@
                         <div class="col-12">
                             <div class=row>
                                 <div class="col-12">
-                                    <h5 class="modal-title mb-3" id="exampleModalLongTitle">Lorem Ipsum Dolor Sit Amet</h5>
+                                    <h5 class="modal-title mb-3" id="exampleModalLongTitle"><span class="prodname"></span></h5>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-body" style="height: 300px; overflow-y: scroll;">
-
                         <div class="row">
-
                             <!-- START FOR LOOP HERE -->
                             <div class="col-12 border-bottom">
                                 <div class=row>
@@ -153,31 +160,24 @@
                                             <img src="img/coke.png" class="rounded img-fluid align-self-center">
                                         </div>
                                     </div>
-
                                     <div class="col-8">
-                                        <p class="my-1">Type: Type Here</p>
-                                        <p class="my-1">Quantity: Quantity Here </p>
-                                        <div class="d-flex justify-content-between align-items-center ">
-                                            <p class="my-1"><- Package - ></p>
-                                            <p class="my-1"><- Price - > </p>
+                                        <p class="my-1">Type: <span class="prodtype">Type Here</span></p>
+                                        <p class="my-1">Quantity: <span class="prodqty">Quantity Here</span></p>
+                                        <div class="proddetails">
                                         </div>
-
                                     </div>
-                                    <p class="my-1"><- Description Here - ></p>
+                                    <div class="col-12">
+                                        <p class="my-1">Description: <br><span class="proddesc"><- Description Here - ></span></p>
+                                    </div>
                                 </div>
                             </div>
-
                         </div>
-
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                     </div>
-                    </div>
                 </div>
             </div>
-
-
         </div>
     </div>
 </div>
@@ -281,27 +281,65 @@
     var a = 0;
 $(document).ready(function() {
     $("#ADDPRODUCT").click(function(event) {
-              event.preventDefault();
+        event.preventDefault();
 
-                  $.ajax({
-                      type: "POST",
-                      url: "{{ route('addproduct') }}",
-                      dataType: "text",
-                      data: $('#uploadform').serialize(),
-                      success: function(data){
-                        //  swal("Success!", "Record has been added to database", "success")
-                        alert('hey');
-                            $('#add').modal('hide');
-                      },
-                      error: function(data){
-                        //  swal("Oh no!", "Something went wrong, try again.", "error")
-                          alert('ho');
-                      }
-                  });
+        $.ajax({
+            type: "POST",
+            url: "{{ route('addproduct') }}",
+            dataType: "text",
+            data: $('#uploadform').serialize(),
+            success: function(data){
+                //  swal("Success!", "Record has been added to database", "success")
+                alert('hey');
+                $('#add').modal('hide');
+            },
+            error: function(data){
+                //  swal("Oh no!", "Something went wrong, try again.", "error")
+                alert('ho');
+            }
+        });
 
-              });
+    });
 
-                });
+    $('.product_info').on('click', function(e) {
+        var id = $(this).data('id');
+
+        $.ajax({
+            url: "{{route('get_product')}}",
+            method: "GET",
+            data: {id: id},
+            dataType: "json",
+            beforeSend: function() {
+                $(".se-pre-con").css("opacity", '0.6');
+                $(".se-pre-con").show("fast");
+            },
+            success: function(result) {
+                var package = "";
+                $('#moreinfo .prodname').text(result[0].prodname);
+                $('#moreinfo .proddesc').text(result[0].proddesc);
+                $('#moreinfo .prodtype').text(result[0].type.prodtype);
+                $('#moreinfo .prodqty').text(result[0].prodtotalquantity);
+
+                $.each(result[0].package, function(key, value) {                    
+                    package += '<div class="d-flex justify-content-between align-items-center ">'+
+                        '<p class="my-1">'+value.prodpack+'</p>'+
+                        '<p class="my-1">'+value.prodprice+'</p>'+
+                    '</div>';
+                })
+
+                $('#moreinfo .proddetails').html(package);
+
+                $(".se-pre-con").fadeOut("slow");
+
+                $('#moreinfo').modal('show');
+            },
+            error: function(err) {
+                $(".se-pre-con").fadeOut("slow");
+            }
+        });
+    });
+
+});
 
     $('#file').on('change', function () {
       readURL(this);
