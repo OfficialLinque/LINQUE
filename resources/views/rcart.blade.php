@@ -70,42 +70,42 @@
                                             </div>
                                            
                                             <div class="custom-control custom-radio my-1 w-100 ml-3">
-                                                <input type="radio" id="pradio1" value="" name="package" class="custom-control-input">
+                                                <input type="radio" id="pradio1" value="" name="package" class="custom-control-input packageradio">
                                                 <label class="custom-control-label w-100" for="pradio1">
                                                     <div class="row w-100">
-                                                        <div class="col-6">
-                                                        by package
+                                                        <div class="col-6 packname">
+                                                        Package 1
                                                         </div>
                                                         <div class="col-6 pack1" >
-                                                        ₱ 100.00
+                                                        loading...
                                                         </div>
                                                     </div>
                                                 </label>
                                                 
                                             </div>
                                             <div class="custom-control custom-radio my-1 w-100 ml-3">
-                                                <input type="radio" id="pradio2" name="package" value="" class="custom-control-input">
+                                                <input type="radio" id="pradio2" name="package" value="" class="custom-control-input packageradio">
                                                 <label class="custom-control-label w-100" for="pradio2">
                                                     <div class="row w-100">
                                                         <div class="col-6">
-                                                        by box
+                                                        Package 2
                                                         </div>
-                                                        <div class="col-6">
-                                                        ₱ 100.00
+                                                        <div class="col-6 pack2">
+                                                        loading...
                                                         </div>
                                                     </div>
                                                 </label>
                                                 
                                             </div>
                                             <div class="custom-control custom-radio my-1 w-100 ml-3">
-                                                <input type="radio" id="pradio3" name="package" value="" class="custom-control-input">
+                                                <input type="radio" id="pradio3" name="package" value="" class="custom-control-input packageradio">
                                                 <label class="custom-control-label w-100" for="pradio3">
                                                     <div class="row w-100">
                                                         <div class="col-6">
-                                                        by case
+                                                        Package 3
                                                         </div>
-                                                        <div class="col-6">
-                                                        ₱ 100.00
+                                                        <div class="col-6 pack3">
+                                                        loading...
                                                         </div>
                                                     </div>
                                                 </label>
@@ -117,7 +117,7 @@
                                                 </div>
                                                 <div class="col-7 pl-1">
                                                     <input  id="updatequantity" name="updatequantity" class="ml-2 form-control text-dark">
-                                                     <input  name="updateid" id="updateid">
+                                                     <input hidden name="updateid" id="updateid">
                                                 </div>
                                             </div>
                                         </div>
@@ -216,14 +216,18 @@ $('document').ready(function() {
                     $(".se-pre-con").show("fast");
                 },
                 success: function(result) {
-                    console.log(result);
-                    $('h5.productName').text(result.prodname);
-                    $('input[id="updatequantity"]').val(result.prodquantity);
-                    $('input[id="pradio1"]').val(result.prodprice);
-                    $('input[id="pradio2"]').val(result.prodprice);
-                    $('input[id="pradio3"]').val(result.prodprice);
-                    $('input[name="updateid"]').val(result.id);
-                    $('div.pack1').text('₱ '+result.prodprice);
+                    console.log(result.package);
+                    var len=Object.keys(result).length;
+
+                    $('h5.productName').text(result.product.prodname);
+                    $('input[id="updatequantity"]').val(result.product.prodquantity);                           
+                    $('input[id="pradio1"]').val(result.package[0].id);
+                    $('input[id="pradio2"]').val(result.package[1].id);
+                    $('input[id="pradio3"]').val(result.package[2].id);
+                    $('input[name="updateid"]').val(result.product.id);
+                    $('div.pack1').text('₱ '+(result.package[0].prodprice).toLocaleString('en')+'.00');
+                    $('div.pack2').text('₱ '+(result.package[1].prodprice).toLocaleString('en')+'.00');
+                    $('div.pack3').text('₱ '+(result.package[2].prodprice).toLocaleString('en')+'.00');
                     $(".se-pre-con").fadeOut("slow");
                 },
                 error: function(err) {
@@ -249,6 +253,7 @@ $('document').ready(function() {
                         },
                         success: function(result) {
                             console.log(result);
+                            $('#edit').modal('hide');
                             $(".se-pre-con").fadeOut("slow");
                         },
                         error: function(err) {
