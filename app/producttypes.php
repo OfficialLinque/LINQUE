@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class producttypes extends Model
 {
-  protected $primaryKey = 'prodid';
+  protected $primaryKey = 'id';
 protected $table = 'producttypes';
 protected $fillable = array(
   'prodtype',

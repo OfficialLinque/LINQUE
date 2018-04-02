@@ -29,15 +29,14 @@ class DistributorController extends Controller
     {
 
             $temp= DB::table('products')
-            ->leftJoin('producttypes', 'producttypes.prodid', '=', 'products.prodtype')
-            ->select('products.*','products.prodname AS iname','products.prodid AS item',   'producttypes.prodtype AS type')
+            ->leftJoin('producttypes', 'producttypes.id', '=', 'products.prodtype')
+            ->select('products.*','products.prodname AS iname','products.id AS item',   'producttypes.prodtype AS type')
             ->get();
         return view('dproduct')->with(compact('temp'));
     }
     public function addproduct(Request $request)
     {
-            $a = $request->dynamicValue;
-
+            $a = $request->dynamicValue1;
 
             $item = new item;
             $item->sellerid =   Auth::user()->id;
@@ -49,15 +48,27 @@ class DistributorController extends Controller
             $item->prodimg = 'test';
             $item->save();
 
-          //  $temp = DB::select('select MAX(id) as "temp" FROM items');
-        //    $package = new package;
-        //    for($i=1;$i<=$a;$i++)
-        //    {
-        //      $package->product_id= $request-> $temp+1;
-        //      $package->description = $request->inpack.i;
-        //      $package->price = $request->inprice.i;
-        //      $package->save();
-          //  }
+            $temp= DB::table('products')
+            ->select('id')
+            ->orderBy('id', 'desc')
+            ->first()->id;
+
+           
+            if($a>=1){
+              for($i=1;$i<=$a;$i++)
+              {
+
+                $inpack="inpack".$i;
+                $inprice="inprice".$i;
+
+
+                $package = new package;
+                $package->prodid = $temp;
+                $package->prodpack = $request->$inpack;
+                $package->prodprice = $request->$inprice;
+                $package->save();
+              }
+            }
 
     }
     public function editproduct(Request $request)
@@ -66,17 +77,20 @@ class DistributorController extends Controller
       $id = $request->input('id');
       $id1 = $request->input('id1');
       $item = item::find($id);
-      $item1 = producttypes::find( $item->prodtype);
-      //$item1 = DB::table('producttypes')->where('prodid', "=", $a);
+      $item1 = producttypes::find($item->prodtype);
+      $packagedata = package::where('prodid', $id)->get();
+
+      $packages = DB::table('prodpackprice')->where('prodid', '=', $id)->count('*');
 
       $output = array(
-      //'id' =>$item->id,
       'prodname' => $item->prodname,
       'prodtotalquantity' =>  $item->prodtotalquantity,
       'prodtype' =>  $item->prodtype,
-     'prodtype1' =>  $item1,
+      'prodtype1' =>  $item1,
       'prodimg' => $item->prodimg,
       'proddesc' =>$item->proddesc,
+      'packages' => $packages,
+      'packagedata' => $packagedata,
       );
       echo json_encode($output);
 
@@ -84,9 +98,10 @@ class DistributorController extends Controller
 
     public function editproduct1(Request $request)
     {
-
+            $id = $request->input('id');
             $a = $request->dynamicValue;
-            //$item = new item;
+            $packagedata = package::where('prodid', $id)->get();
+            
             $id = $request->input('id');
             $item = item::find($id);
             $item->prodname = $request->epname;
@@ -97,15 +112,35 @@ class DistributorController extends Controller
             $item->prodimg = 'test';
             $item->save();
 
-      /*      $temp = DB::select('select MAX(id) as "temp" FROM items');
-            $package = new package;
-            for($i=1;$i<=$a;$i++)
-            {
-              $package->product_id= $request-> $temp+1;
-              $package->description = $request->inpack.i;
-              $package->price = $request->inprice.i;
-              $package->save();
-            }*/
+           
+            if($a>=1){
+              for($i=1;$i<=$a;$i++)
+              {
+                $checker = 0;
+                $inpack="inpack".$i;
+                $inprice="inprice".$i;
+                $hidden="hidden".$i;
+
+                if($request->$hidden!=NULL){
+                  $checker = 1;
+                }
+
+                if($checker == 0){
+                  $package = new package;
+                  $package->prodid = $id;
+                  $package->prodpack = $request->$inpack;
+                  $package->prodprice = $request->$inprice;
+                  $package->save();
+                }else if($checker == 1){
+                  $package = package::find($request->$hidden);
+                  $package->prodid = $id;
+                  $package->prodpack = $request->$inpack;
+                  $package->prodprice = $request->$inprice;
+                  $package->save();
+                }
+
+              }
+            }
 
     }
     public function deleteproduct(Request $request)

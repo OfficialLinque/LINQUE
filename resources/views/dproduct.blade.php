@@ -54,7 +54,7 @@
                     <div class="modal-body" style="height: 400px; overflow-y: scroll;">
                         <form id="uploadform1">
                         <input type="hidden" name="_token" value="{{ csrf_token()}}">
-                        <input type="hidden" name="dynamicValue" id="dynamicValue" >
+                        <input type="hidden" name="dynamicValue" id="dynamicValue">
                         <input type="hidden" name="id" id="id"  >
                         <input type="hidden" name="id1" id="id1"  >
 
@@ -142,7 +142,7 @@
                         <div class="col-12">
                             <div class=row>
                                 <div class="col-12">
-                                    <h5 class="modal-title mb-3" id="tanginamo">Lorem Ipsum Dolor Sit Amet</h5>
+                                    <h5 class="modal-title mb-3" id="productTitle">Lorem Ipsum Dolor Sit Amet</h5>
                                 </div>
                             </div>
                         </div>
@@ -161,15 +161,21 @@
                                     </div>
 
                                     <div class="col-8">
-                                        <p  class="my-1" id="tanginamo1">Type: Type Here</p>
-                                        <p class="my-1" id="tanginamo2">Quantity: Quantity Here </p>
+                                        <p  class="my-1" id="productType">Type: Type Here</p>
+                                        <p class="my-1" id="productQuantity">Quantity: Quantity Here </p>
                                         <div class="d-flex justify-content-between align-items-center ">
-                                            <p class="my-1"><- Package - ></p>
-                                            <p class="my-1"><- Price - > </p>
+                                            <table border="1">
+                                              <thead>
+                                                <th>Package</th>
+                                                <th>Price</th>
+                                              </thead>
+                                              <tbody id="packages">
+                                              </tbody>
+                                            </table>
                                         </div>
 
                                     </div>
-                                    <p class="my-1" id="tanginamo3"><- Description Here - ></p>
+                                    <p class="my-1" id="productDescription"><- Description Here - ></p>
                                 </div>
                             </div>
 
@@ -205,7 +211,7 @@
       <div class="modal-body" style="height: 400px; overflow-y: scroll;">
         <form id="uploadform">
         <input type="hidden" name="_token" value="{{ csrf_token()}}">
-          <input type="hidden" name="dynamicValue" id="dynamicValue" >
+          <input type="hidden" name="dynamicValue1" id="dynamicValue1" >
         <div class="text-center mb-2">
             <img id="fileimg" name="fileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
         </div>
@@ -287,7 +293,27 @@
     var a = 0;
 $(document).ready(function() {
 
+    $("#edit1").on("hidden.bs.modal", function () {
+        for(var i=a;i>0;i--){
+            REMOVECOL(i);
+        }
+        $('#dynamicValue').val(a);
+    });
+
+    $("#add").on("hidden.bs.modal", function () {
+        for(var i=a;i>0;i--){
+            REMOVECOL(i);
+        }
+        $('#dynamicValue1').val(a);
+    });
+
+    $("#moreinfo").on("hidden.bs.modal", function () {
+        $('#packages').empty();
+    });
+
   $(document).on('click', '.delete1', function(){
+
+
               var id = $(this).attr('id');
               iziToast.show({
                   theme: 'dark',
@@ -354,6 +380,8 @@ $(document).ready(function() {
                         //  swal("Success!", "Record has been added to database", "success")
                         //alert('hey');
                         $('#add').modal('hide');
+                        $("#uploadform")[0].reset();
+
                         iziToast.success({
                         title: 'Add Complete',
                         position: 'topCenter',
@@ -363,37 +391,40 @@ $(document).ready(function() {
                       error: function(data){
                         //  swal("Oh no!", "Something went wrong, try again.", "error")
                           alert('ho');
+
+                          console.log(data);
                       }
                   });
 
               });
 
 
-              $("#EDITPRODUCT").click(function(event) {
-                        event.preventDefault();
+        $("#EDITPRODUCT").click(function(event) {
+            event.preventDefault();
 
-                            $.ajax({
-                                type: "POST",
-                                url: "{{ route('editproduct1') }}",
-                                dataType: "text",
-                                data: $('#uploadform1').serialize(),
-                                success: function(data){
-                                  //  swal("Success!", "Record has been added to database", "success")
-                              //    alert('hey');
-                                  $('#edit1').modal('hide');
-                                  iziToast.success({
-                                  title: 'Edit Complete',
-                                  position: 'topCenter',
-                                  message: 'Item is now up to date!'
-                              });
-                                },
-                                error: function(data){
-                                  //  swal("Oh no!", "Something went wrong, try again.", "error")
-                                    alert('ho');
-                                }
-                            });
+                $.ajax({
+                    type: "POST",
+                    url: "{{ route('editproduct1') }}",
+                    dataType: "text",
+                    data: $('#uploadform1').serialize(),
+                    success: function(data){
+                      //  swal("Success!", "Record has been added to database", "success")
+                  //    alert('hey');
+                      $('#edit1').modal('hide');
+                      iziToast.success({
+                      title: 'Edit Complete',
+                      position: 'topCenter',
+                      message: 'Item is now up to date!'
+                  });
+                    },
+                    error: function(data){
+                      //  swal("Oh no!", "Something went wrong, try again.", "error")
+                        alert('ho');
+                        console.log(data)
+                    }
+                });
 
-                        });
+        });
 
 
 
@@ -414,7 +445,24 @@ $(document).ready(function() {
                     $('#epdesc').val(data.proddesc);
                     $('#edit1').modal('show');
 
-                  }
+                    for(var i=0;i<data.packages;i++){
+                        a++;
+                        EDITPPCOL();
+                        $('#dynamicValue').val(a);
+
+                        $('#hidden'+a).val(data.packagedata[i].id);
+                        $('#inpack'+a).val(data.packagedata[i].prodpack);
+                        $('#inprice'+a).val(data.packagedata[i].prodprice);
+                    }
+
+                    console.log(data)
+
+                  },
+                    error: function(data){
+                      //  swal("Oh no!", "Something went wrong, try again.", "error")
+                        alert('ho');
+                        console.log(data)
+                    }
                 })
               });
 
@@ -429,12 +477,17 @@ $(document).ready(function() {
                     dataType:'json',
                     success:function(data){
                     //  alert(data.prodtype);
-                      $('#tanginamo').text(data.prodname);
-                      $('#tanginamo2').text("Quantity: "+data.prodtotalquantity);
-                      $('#tanginamo1').text("Type: "+data.prodtype1.prodtype);
-                      $('#tanginamo3').text("Description: "+data.proddesc);
+                      $('#productTitle').text(data.prodname);
+                      $('#productQuantity').text("Quantity: "+data.prodtotalquantity);
+                      $('#productType').text("Type: "+data.prodtype1.prodtype);
+                      $('#productDescription').text("Description: "+data.proddesc);
                       $('#moreinfo').modal('show');
 
+
+                      for(var i=0;i<data.packages;i++){
+                      $('#packages').append("<tr><td>"+data.packagedata[i].prodpack+"</td><td>"+data.packagedata[i].prodprice+"</td></tr>");
+                      }
+                      
                     }
                   });
 
@@ -456,12 +509,16 @@ $(document).ready(function() {
 
                 $('#ADDPP').on('click', function () {
                   a++;
+                  $('#dynamicValue').val(a);
+                  $('#dynamicValue1').val(a);
                   console.log(a);
                   ADDPPCOL();
                 });
 
                 $('#EDITPP').on('click', function () {
                   a++;
+                  $('#dynamicValue').val(a);
+                  $('#dynamicValue1').val(a);
                   console.log(a);
                   EDITPPCOL();
                 });
@@ -469,12 +526,12 @@ $(document).ready(function() {
                 function ADDPPCOL() {
 
                   $('#ADDPPCOL').append(
-                    '<div id="'+ a +'" class="row mb-2 parrow">' +
+                    '<div id="package'+ a +'" class="row mb-2 parrow">' +
                     '<div id="package" class="col pr-2">' +
-                      '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'">' +
+                      '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'"  name="inpack'+a+'">' +
                       '</div>' +
                       '<div id="price" class="col pl-0 pr-2">' +
-                      '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'">' +
+                      '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'" name="inprice'+a+'">' +
                       '</div>' +
                       '<div class="col pl-0">' +
                       '<input onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
@@ -487,12 +544,13 @@ $(document).ready(function() {
                   function EDITPPCOL() {
 
                     $('#EDITPPCOL').append(
-                      '<div id="'+ a +'" class="row mb-2 parrow">' +
+                      '<div id="package'+ a +'" class="row mb-2 parrow">' +
+                      '<input type="hidden" id="hidden'+a+'" name="hidden'+a+'">' +
                       '<div id="package" class="col pr-2">' +
-                      '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'">' +
+                      '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'" name="inpack'+a+'">' +
                       '</div>' +
                       '<div id="price" class="col pl-0 pr-2">' +
-                      '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'">' +
+                      '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'" name="inprice'+a+'">' +
                       '</div>' +
                       '<div class="col pl-0">' +
                       '<input onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
@@ -505,13 +563,14 @@ $(document).ready(function() {
 
 
 
-    function REMOVECOL(c) {
-        $("#"+c).remove();
-        a=a-1;
-        $('#dynamicValue').val(a);
-        console.log(a);
+                function REMOVECOL(c) {
+                    $("#package"+c).remove();
+                    a=a-1;
+                    $('#dynamicValue').val(a);
+                    $('#dynamicValue1').val(a);
+                    console.log(a);
 
-    }
+                }
 
 </script>
 @endsection

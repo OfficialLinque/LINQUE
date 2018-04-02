@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class item extends Model
 {
-  protected $primaryKey = 'prodid';
+  protected $primaryKey = 'id';
 protected $table = 'products';
 protected $fillable = array(
   'prodname',
