@@ -141,10 +141,6 @@
                 }
             });
         })
-
-        function joinshit(){
-
-        }
     });
 </script>
 @endsection
