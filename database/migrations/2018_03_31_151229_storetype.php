@@ -16,7 +16,6 @@ class Storetype extends Migration
         Schema::create('storetypes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('strtype');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

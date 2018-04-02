@@ -22,7 +22,6 @@ class Transaction extends Migration
             $table->integer('prodprice');
             $table->integer('prodquantity');
             $table->integer('sellerid');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

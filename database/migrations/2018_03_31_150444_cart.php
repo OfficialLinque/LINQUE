@@ -16,12 +16,8 @@ class Cart extends Migration
         Schema::create('carts', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('buyerid');
-            $table->integer('prodid');
-            $table->string('prodpack');
-            $table->integer('prodprice');
+            $table->integer('prodpackid');
             $table->integer('prodquantity');
-            $table->integer('sellerid');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

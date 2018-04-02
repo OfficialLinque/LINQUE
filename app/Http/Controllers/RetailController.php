@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Product;
+use App\Cart;
 
 class RetailController extends Controller
 {
@@ -23,11 +25,17 @@ class RetailController extends Controller
      */
     public function purchase()
     {
-        return view('rpurchase');
+        $products = Product::with('type', 'package')->get();
+
+        return view('rpurchase', compact('products'));
     }
+
     public function cart()
     {   
-        return view('rcart');
+        $carts = Cart::with('package', 'buyer')->get();
+
+        // echo json_encode($carts);
+        return view('rcart', compact('carts'));
     }
     public function checkout()
     {

@@ -16,7 +16,6 @@ class Producttype extends Migration
         Schema::create('producttypes', function (Blueprint $table) {
             $table->increments('id');
             $table->string('prodtype');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

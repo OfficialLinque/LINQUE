@@ -3,9 +3,10 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\item;
+use App\Product;
+use App\ProductType;
 use DB;
-use App\package;
+use Auth;
 class DistributorController extends Controller
 {
     /**
@@ -25,8 +26,24 @@ class DistributorController extends Controller
      */
     public function index()
     {
-        return view('dproduct');
+        $products = Product::where('sellerid', Auth::id())->get();
+        
+        return view('dproduct', compact('products'));
     }
+
+    public function get(Request $request) {        
+        $validator = $request->validate([
+            'id' => 'required|integer',
+            ],[
+            'id.required' => 'ID is not defined.'
+            ]
+        );
+
+        $product = Product::where('id', $request->id)->with('type', 'package')->get();
+
+        echo json_encode($product);
+    }
+
     public function addproduct(Request $request)
     {
         $a = $request->dynamicValue;

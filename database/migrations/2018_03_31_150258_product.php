@@ -21,7 +21,6 @@ class Product extends Migration
             $table->string('proddesc');
             $table->integer('prodtype');
             $table->integer('prodtotalquantity');
-            $table->rememberToken();
             $table->timestamps();
         });
     }
