@@ -53,24 +53,23 @@ class CartController extends Controller
         } else if($option === 'delete') {
             $check = array();
             $id = $request->input('id');
-       $deleteproduct = Cart::where('id', $id)->first();
+            $deleteproduct = Cart::where('id', $id)->first();
 
-       if($deleteproduct){
-            
-             Cart::find($id)->delete();
+            if($deleteproduct){                    
+                Cart::find($id)->delete();
 
-            $check = array(
-                'success' => true, 
-                'message' => ' successfully deleted!');
-        } else {
-            $check = array(
-                'success' => false, 
-                'message' => 'Something went wrong!');
-        }
-        
+                $check = array(
+                    'success' => true, 
+                    'message' => ' successfully deleted!'
+                );
+            } else {
+                $check = array(
+                    'success' => false, 
+                    'message' => 'Something went wrong!'
+                );
+            }    
 
-echo json_encode($check);
-
+            echo json_encode($check);
         } else if($option === 'getData') {
              $id = $request->input('id');
              $cart = Cart::where('id', $id)->first();

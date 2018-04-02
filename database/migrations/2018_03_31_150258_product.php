@@ -17,7 +17,7 @@ class Product extends Migration
             $table->increments('id');
             $table->integer('sellerid');
             $table->string('prodimg');
-            $table->string('prodname')->unique();
+            $table->string('prodname');
             $table->string('proddesc');
             $table->integer('prodtype');
             $table->integer('prodtotalquantity');

@@ -56,88 +56,67 @@
                 @endforeach
             @endif
             <!-- Modal -->
+            <form id="edit-product" method="POST">
             <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editLongTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="editLongTitle">Edit Product</h5>
-                    </div>
-                    <div class="modal-body" style="height: 400px; overflow-y: scroll;">
-                        <form id="uploadform">
-                        <input type="hidden" name="_token" value="{{ csrf_token()}}">
-                        <div class="text-center mb-2">
-                            <img id="epfileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editLongTitle">Edit Product</h5>
+                            <input type="hidden" name="epid">
                         </div>
-                        <div class="input-group mb-2">
-                            <input id="file" name="epimg"  hidden type="file" accept="image/*"/>
-                            <input type="button" class="btn btn-outline-primary btn-block" value="Upload Product Image" onclick="document.getElementById('file').click();" />
-                        </div>
-                        <div class="row  mb-0">
-                            <div class="col pr-1">
-                                <div class="form-group">
-                                    <label for="name" class="bmd-label-floating">Product Name</label>
-                                    <input type="text" name="epname" class="form-control" id="epname">
+                        <div class="modal-body" style="height: 400px; overflow-y: scroll;">
+                            <form id="uploadform">
+                            <input type="hidden" name="_token" value="{{ csrf_token()}}">
+                            <div class="text-center mb-2">
+                                <img id="epfileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
+                            </div>
+                            <div class="input-group mb-2">
+                                <input id="file" name="epimg"  hidden type="file" accept="image/*"/>
+                                <input type="button" class="btn btn-outline-primary btn-block" value="Upload Product Image" onclick="document.getElementById('file').click();" />
+                            </div>
+                            <div class="row  mb-0">
+                                <div class="col pr-1">
+                                    <div class="form-group">
+                                        <label for="name" class="bmd-label-floating">Product Name</label>
+                                        <input type="text" name="epname" class="form-control" id="epname">
+                                    </div>
+                                </div>
+                                <div class="col pl-1">
+                                    <div class="form-group">
+                                        <label for="name" class="bmd-label-floating">Product Quantity</label>
+                                        <input type="number" name="epquantity" class="form-control" id="epquantity">
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col pl-1">
-                                <div class="form-group">
-                                    <label for="name" class="bmd-label-floating">Product Quantity</label>
-                                    <input type="number" name="epquantity" class="form-control" id="epquantity">
+                            <div class="form-group  mb-2">
+                                <label for="desc" class="bmd-label-floating">Product Description</label>
+                                <textarea class="form-control" name="epdesc" id="epdesc" rows="3"></textarea>
+                            </div>
+                            @if($producttypes)
+                            <div class="form-group  mb-3">
+                                <label for="type" class="bmd-label-floating">Product Type</label>
+                                <select id="ptype" class="form-control" name="ptype" required>            
+                                    <option selected hidden value="">Choose Type...</option>
+                                    @foreach($producttypes as $producttype)
+                                    <option value="{{$producttype->id}}">{{$producttype->prodtype}}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            @endif
+                            <div class="mb-2">
+                                <p class="text-center text-primary lead" style="font-size: 15px;">Product Pack & Price</p>
+                                <div id="EDITPPCOL" class="m-0">
                                 </div>
                             </div>
                         </div>
-                        <div class="form-group  mb-2">
-                            <label for="desc" class="bmd-label-floating">Product Description</label>
-                            <textarea class="form-control" name="epdesc" id="epdesc" rows="3"></textarea>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button id="EDITDPRODUCT" type="submit" class="btn btn-primary">Edit</button>
                         </div>
-                        <div class="form-group  mb-3">
-                            <label for="type" class="bmd-label-floating">Product Type</label>
-                            <select id="type" class="form-control" name="eptype">
-                                <option selected hidden>Choose Type...</option>
-                                <option value="1">Bakery and Bread</option>
-                                <option value="2">Meat and Seafood</option>
-                                <option value="3">Pasta and Rice</option>
-                                <option value="4">Oils, Sauces, and Condiments</option>
-                                <option value="5">Cereals and Breakfast foods</option>
-                                <option value="6">Soup and Canned Goods</option>
-                                <option value="7">Frozen Foods</option>
-                                <option value="8">Dairy, Cheese and Eggs</option>
-                                <option value="9">Snacks and Crakers</option>
-                                <option value="10">Produce</option>
-
-                                <option value="11">Dishwashing</option>
-                                <option value="12">Haircare</option>
-                                <option value="13">Healthcare products</option>
-                                <option value="14">Household</option>
-                                <option value="15">Laundry detergents</option>
-                                <option value="16">Menstrual hygiene</option>
-                                <option value="17">Skin care</option>
-
-                                <option value="18">Beer</option>
-                                <option value="19">Coffee </option>
-                                <option value="20">Energy drink</option>
-                                <option value="21">Water</option>
-                                <option value="22">Softdrinks</option>
-                                <option value="23">Juice</option>
-                            </select>
-                        </div>
-                        </form>
-                        <div class="mb-2">
-                            <p class="text-center text-primary lead" style="font-size: 15px;">Product Pack & Price</p>
-                            <div id="EDITPPCOL" class="m-0">
-
-                            </div>
-                            <input id="EDITPP" type="button" class="btn btn-outline-primary btn-block" value="Add Product Pack & Price" />
-                        </div>
-
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                        <button id="EDITDPRODUCT" type="button" class="btn btn-primary">Edit</button>
-                    </div>
                     </div>
                 </div>
             </div>
+            </form>
             <div class="modal fade" id="moreinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -238,14 +217,22 @@
         @endif
         <div class="mb-2">
             <p class="text-center text-primary lead" style="font-size: 15px;">Product Pack & Price</p>
-            <div id="ADDPPCOL" class="m-0">
+            <div id="ADDPPCOL" class="m-0">            
+                <div class="row mb-2 parrow">
+                    <div id="package" class="col pr-2">
+                        <input type="text" class="form-control" Placeholder="Package..." name="packagename[]" required>
+                    </div>
+                    <div id="price" class="col pl-0 pr-2">
+                        <input type="number" class="form-control" Placeholder="Price..." name="packageprice[]" required>
+                    </div>
+                </div>
             </div>
             <input id="ADDPP" type="button" class="btn btn-outline-primary btn-block" value="Add Product Pack & Price" />
         </div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="ADDPRODUCT" type="submit" class="btn btn-primary">Add</button>
+        <button type="submit" class="btn btn-primary">Add</button>
       </div>
     </div>
   </div>
@@ -262,23 +249,27 @@ $(document).ready(function() {
         event.preventDefault();
 
         var data = $(this).serialize();
-        console.log(data);
-
-        return;
 
         $.ajax({
             type: "POST",
             url: "{{ route('product', 'add') }}",
             dataType: "json",
-            data: $('#uploadform').serialize(),
-            success: function(data){
-                //  swal("Success!", "Record has been added to database", "success")
-                // alert('hey');
-                // $('#add').modal('hide');
+            data: data,
+            beforeSend: function() {
+                $(".se-pre-con").css("opacity", '0.6');
+                $(".se-pre-con").show("fast");
             },
-            error: function(data){
-                //  swal("Oh no!", "Something went wrong, try again.", "error")
-                // alert('ho');
+            success: function(data){                
+                // $(".se-pre-con").fadeOut("slow");
+
+                $('#add').modal('hide');
+
+                window.location.reload();
+            },
+            error: function(data){   
+                $(".se-pre-con").fadeOut("slow");
+
+                $('#add').modal('hide');
             }
         });
 
@@ -322,9 +313,79 @@ $(document).ready(function() {
         });
     });
 
+    $('.product_edit').click(function(e) {
+        var id = $(this).data('id');
+
+        $.ajax({
+            url: "{{route('get_product')}}",
+            method: "GET",
+            data: {id: id},
+            dataType: "json",
+            beforeSend: function() {
+                $(".se-pre-con").css("opacity", '0.6');
+                $(".se-pre-con").show("fast");
+            },
+            success: function(result) {
+                $('form#edit-product input[name="epid"]').val(result[0].id);
+                $('form#edit-product input[name="epname"]').val(result[0].prodname).parent().addClass('is-filled');
+                $('form#edit-product input[name="epquantity"]').val(result[0].prodtotalquantity).parent().addClass('is-filled');
+                $('form#edit-product textarea[name="epdesc"]').val(result[0].proddesc).parent().addClass('is-filled');
+                $('form#edit-product select[name="ptype"]').val(result[0].type.id).parent().addClass('is-filled');
+                
+                $('#EDITPPCOL').empty();
+                $.each(result[0].package, function(key, value) {                    
+                    $('#EDITPPCOL').append(
+                        '<div class="row mb-2 parrow">' +
+                            '<input type="hidden" class="form-control" name="packageid[]" value="'+value.id+'">' +
+                            '<div id="package" class="col pr-2">' +
+                                '<input type="text" class="form-control" Placeholder="Package..." name="packagename[]" value="'+value.prodpack+'">' +
+                            '</div>' +
+                            '<div id="price" class="col pl-0 pr-2">' +
+                                '<input type="number" class="form-control" Placeholder="Price..." name="packageprice[]" value="'+value.prodprice+'">' +
+                            '</div>' +
+                        '</div>'
+                    );
+                })
+
+                $(".se-pre-con").fadeOut("slow");
+
+                $('#edit').modal('show');
+            },
+            error: function(err) {
+                $(".se-pre-con").fadeOut("slow");
+            }
+        });
+    });
+
+    $('form#edit-product').submit(function(e) {
+        e.preventDefault();
+
+        var data = $(this).serialize();
+
+        $.ajax({
+            url: "{{route('product', 'edit')}}",
+            method: "POST",
+            data: data,
+            dataType: "json",
+            beforeSend: function() {
+                $(".se-pre-con").css("opacity", '0.6');
+                $(".se-pre-con").show("fast");
+            },
+            success: function(result) {
+                $('#edit').modal('hide');
+                window.location.reload();
+            },
+            error: function(err) {
+                alert('error');
+                $(".se-pre-con").fadeOut("slow");
+            }
+        });
+    });
+
     $('#file').on('change', function () {
       readURL(this);
     });
+
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
@@ -343,22 +404,22 @@ $(document).ready(function() {
 
     function ADDPPCOL() {
         $('#ADDPPCOL').append(
-            '<div id="'+ a +'" class="row mb-2 parrow">' +
+            '<div class="row mb-2 parrow">' +
                 '<div id="package" class="col pr-2">' +
-                    '<input type="text" class="form-control" Placeholder="Package..." name="packagename[]" required>' +
+                    '<input type="text" class="form-control" Placeholder="Package..." name="packagename[]">' +
                 '</div>' +
                 '<div id="price" class="col pl-0 pr-2">' +
-                    '<input type="number" class="form-control" Placeholder="Price..." name="packageprice[]" required>' +
+                    '<input type="number" class="form-control" Placeholder="Price..." name="packageprice[]">' +
                 '</div>' +
                 '<div class="col pl-0">' +
-                    '<input onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
+                    '<input type="button" class="btn btn-sm btn-outline-danger btn-block remove-package" value="Remove"/>' +
                 '</div>'+
             '</div>'
         );
-    }
 
-    function REMOVECOL(c) {
-        $("#"+c).remove();
+        $('.remove-package').click(function(e) {
+            $(this).parent().parent().remove();
+        });
     }
 });
 </script>
