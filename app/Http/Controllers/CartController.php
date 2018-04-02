@@ -77,7 +77,7 @@ class CartController extends Controller
              $productni = DB::table('prodpackprice')
             ->join('products', 'prodpackprice.prodid', '=', 'products.id')
             ->join('carts', 'prodpackprice.id', '=', 'carts.prodpackid')
-            ->select('carts.*', 'products.prodname', 'prodpackprice.prodprice')
+            ->select('carts.prodpackid','carts.prodquantity','carts.buyerid', 'products.prodname','products.id','carts.id as cart_id', 'prodpackprice.prodprice')
             ->where('carts.id', '=', $id)
             ->first();
 
@@ -103,8 +103,9 @@ class CartController extends Controller
                     $produkto->prodquantity = $request->updatequantity;
                     $cart = $produkto->save();
                     echo json_encode(true); 
-
         }
+
+            echo json_encode($request->package);
             
         
     }else if($option === 'checkout') {

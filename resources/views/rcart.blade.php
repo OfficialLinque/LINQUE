@@ -60,57 +60,20 @@
                                     <form class="editproduct">
                                     <div class="modal-body py-2" style="height: fit-content">
                                         <div class="row">
+                                           
                                             <div class="row w-100 mb-2">
                                                 <div class="col-6 text-center">
                                                     <p class="mb-2 text-uppercase">Pack</p>
                                                 </div>
                                                 <div class="col-6 text-center">
-                                                    <p class="mb-2 text-uppercase">Price</p>
+                                                    <p class="text-uppercase">Price</p>
                                                 </div>
                                             </div>
-                                           
-                                            <div class="custom-control custom-radio my-1 w-100 ml-3">
-                                                <input type="radio" id="pradio1" value="" name="package" class="custom-control-input packageradio">
-                                                <label class="custom-control-label w-100" for="pradio1">
-                                                    <div class="row w-100">
-                                                        <div class="col-6 packname">
-                                                        Package 1
-                                                        </div>
-                                                        <div class="col-6 pack1" >
-                                                        loading...
-                                                        </div>
-                                                    </div>
-                                                </label>
+                                            <div class="packagedisplay">
+                                                
                                                 
                                             </div>
-                                            <div class="custom-control custom-radio my-1 w-100 ml-3">
-                                                <input type="radio" id="pradio2" name="package" value="" class="custom-control-input packageradio">
-                                                <label class="custom-control-label w-100" for="pradio2">
-                                                    <div class="row w-100">
-                                                        <div class="col-6">
-                                                        Package 2
-                                                        </div>
-                                                        <div class="col-6 pack2">
-                                                        loading...
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                                
-                                            </div>
-                                            <div class="custom-control custom-radio my-1 w-100 ml-3">
-                                                <input type="radio" id="pradio3" name="package" value="" class="custom-control-input packageradio">
-                                                <label class="custom-control-label w-100" for="pradio3">
-                                                    <div class="row w-100">
-                                                        <div class="col-6">
-                                                        Package 3
-                                                        </div>
-                                                        <div class="col-6 pack3">
-                                                        loading...
-                                                        </div>
-                                                    </div>
-                                                </label>
-                                                
-                                            </div>
+                                            
                                             <div class="row w-100 mt-3 ">
                                                 <div class="col-5 text-center pr-0 pt-2">
                                                     <h5 class="mb-2 text-uppercase my-auto">Quantity :</h5>
@@ -216,18 +179,45 @@ $('document').ready(function() {
                     $(".se-pre-con").show("fast");
                 },
                 success: function(result) {
-                    console.log(result.package);
-                    var len=Object.keys(result).length;
-
+                     var package = "";
+                    console.log(result.product);
+                    var len=Object.keys(result.package).length;
+                    console.log(len);
                     $('h5.productName').text(result.product.prodname);
                     $('input[id="updatequantity"]').val(result.product.prodquantity);                           
-                    $('input[id="pradio1"]').val(result.package[0].id);
-                    $('input[id="pradio2"]').val(result.package[1].id);
-                    $('input[id="pradio3"]').val(result.package[2].id);
-                    $('input[name="updateid"]').val(result.product.id);
-                    $('div.pack1').text('₱ '+(result.package[0].prodprice).toLocaleString('en')+'.00');
-                    $('div.pack2').text('₱ '+(result.package[1].prodprice).toLocaleString('en')+'.00');
-                    $('div.pack3').text('₱ '+(result.package[2].prodprice).toLocaleString('en')+'.00');
+                    // $('input[id="pradio1"]').val(result.package[0].id);
+                    // $('input[id="pradio2"]').val(result.package[1].id);
+                    // $('input[id="pradio3"]').val(result.package[2].id);
+                    $('input[name="updateid"]').val(result.product.cart_id);
+
+                    // <div class="custom-control custom-radio my-1 w-100 ml-3">
+                    //                             <input type="radio" id="pradio3" name="package" value="" class="custom-control-input packageradio">
+                    //                             <label class="custom-control-label w-100" for="pradio3">
+                    //                                 <div class="row w-100">
+                    //                                     <div class="col-6">
+                    //                                     Package 3
+                    //                                     </div>
+                    //                                     <div class="col-6 pack3">
+                    //                                     loading...
+                    //                                     </div>
+                    //                                 </div>
+                    //                             </label>
+                                                
+                    //                         </div>
+
+
+                    for(var x=0;x<len;x++){
+
+                        package += '<div class="custom-control custom-radio my-1 w-100 ml-3">'+
+                            ' <input type="radio" id="pradio'+x+'" value="'+result.package[x].id+'" name="package" class="custom-control-input packageradio">'+
+                            '<label class="custom-control-label w-100" for="pradio'+x+'">'+'<div class="row w-100">'+'<div class="col-12">'+(result.package[x].prodpack)+'</div>'+'<div class="col-12">'+(result.package[x].prodprice).toLocaleString('en')+'.00'+'</div>'+'</div>'+'</label>'+'</div>';
+                                                  
+                       
+                    }
+                    $('#edit .packagedisplay').html(package);
+                    // $('div.pack1').text('₱ '+(result.package[0].prodprice).toLocaleString('en')+'.00');
+                    // $('div.pack2').text('₱ '+(result.package[1].prodprice).toLocaleString('en')+'.00');
+                    // $('div.pack3').text('₱ '+(result.package[2].prodprice).toLocaleString('en')+'.00');
                     $(".se-pre-con").fadeOut("slow");
                 },
                 error: function(err) {
