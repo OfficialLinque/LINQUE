@@ -2,7 +2,7 @@
 
 @section('nav')
 <li class="nav-item dropdown">
-    <a class="nav-link" href="{{ route('purchase') }}">Purchase <span class="sr-only">(current)</span></a>
+    <a class="nav-link" href="{{ route('rhome') }}">Purchase <span class="sr-only">(current)</span></a>
 </li>
 <li class="nav-item active ">
     <a class="nav-link" >Cart <span class="sr-only">(current)</span></a>
