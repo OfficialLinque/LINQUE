@@ -20,7 +20,6 @@
 <div class="album mt-4 py-5 bg-light">
     <div class="container">
         <div class="row">
-            <!-- START FOR LOOP HERE -->
             @if($trans)
                 @foreach($trans as $tran)
                 <div class="col-md-4">
@@ -54,12 +53,7 @@
                 </div>
                 @endforeach
             @endif
-
-
-
-
-
-
+            
             <!-- Modal -->
             <div class="modal fade" id="moreinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -76,11 +70,8 @@
                         </div>
                     </div>
                     <div class="modal-body" style="height: 400px; overflow-y: scroll;">
-                        
                         <div class="row items">
-                            <!-- START FOR LOOP HERE -->
-                            
-                                    
+                        <!--items here-->
                         </div>
                     </div>
                     <div class="modal-footer">
@@ -89,7 +80,6 @@
                     </div>
                 </div>
             </div>
-            <!-- END FOR LOOP HERE -->
         </div>
     </div>
 </div>
