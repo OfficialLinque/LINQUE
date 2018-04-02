@@ -14,7 +14,6 @@ class ProductsTableSeeder extends Seeder
     {
         \DB::table('products')->insert(array (
 			0 => array (
-                'id' => 1,
 				'sellerid' => 2,
 				'prodimg' => 'testimg',
 				'prodname' => 'Coca Cola',
@@ -25,7 +24,6 @@ class ProductsTableSeeder extends Seeder
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ),
 			1 => array (
-                'id' => 2,
 				'sellerid' => 2,
 				'prodimg' => 'testimg',
 				'prodname' => 'Nagoya Sardines',
@@ -36,7 +34,6 @@ class ProductsTableSeeder extends Seeder
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ),
 			2 => array (
-                'id' => 3,
 				'sellerid' => 2,
 				'prodimg' => 'testimg',
 				'prodname' => 'Quickchow',
