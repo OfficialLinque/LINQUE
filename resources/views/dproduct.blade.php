@@ -294,16 +294,14 @@
 $(document).ready(function() {
 
     $("#edit1").on("hidden.bs.modal", function () {
-        for(var i=a;i>0;i--){
-            REMOVECOL(i);
-        }
+        $('.package').remove();
+        a=0;
         $('#dynamicValue').val(a);
     });
 
     $("#add").on("hidden.bs.modal", function () {
-        for(var i=a;i>0;i--){
-            REMOVECOL(i);
-        }
+        $('.package').remove();
+        a=0;
         $('#dynamicValue1').val(a);
     });
 
@@ -365,6 +363,8 @@ $(document).ready(function() {
           });
           //USE
 
+
+    
 
 
 
@@ -445,14 +445,16 @@ $(document).ready(function() {
                     $('#epdesc').val(data.proddesc);
                     $('#edit1').modal('show');
 
-                    for(var i=0;i<data.packages;i++){
-                        a++;
-                        EDITPPCOL();
-                        $('#dynamicValue').val(a);
-
-                        $('#hidden'+a).val(data.packagedata[i].id);
-                        $('#inpack'+a).val(data.packagedata[i].prodpack);
-                        $('#inprice'+a).val(data.packagedata[i].prodprice);
+                    if(data.packages!=0){
+                        for(var i=0;i<data.packages;i++){
+                            a++;
+                            console.log(a);
+                            EDITPPCOL();
+                            $('#dynamicValue').val(a);
+                            $('#hidden'+a).val(data.packagedata[i].id);
+                            $('#inpack'+a).val(data.packagedata[i].prodpack);
+                            $('#inprice'+a).val(data.packagedata[i].prodprice);
+                        }
                     }
 
                     console.log(data)
@@ -526,7 +528,7 @@ $(document).ready(function() {
                 function ADDPPCOL() {
 
                   $('#ADDPPCOL').append(
-                    '<div id="package'+ a +'" class="row mb-2 parrow">' +
+                    '<div id="package'+ a +'" class="row mb-2 parrow package">' +
                     '<div id="package" class="col pr-2">' +
                       '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'"  name="inpack'+a+'">' +
                       '</div>' +
@@ -544,7 +546,7 @@ $(document).ready(function() {
                   function EDITPPCOL() {
 
                     $('#EDITPPCOL').append(
-                      '<div id="package'+ a +'" class="row mb-2 parrow">' +
+                      '<div id="package'+ a +'" class="row mb-2 parrow package">' +
                       '<input type="hidden" id="hidden'+a+'" name="hidden'+a+'">' +
                       '<div id="package" class="col pr-2">' +
                       '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'" name="inpack'+a+'">' +
@@ -553,7 +555,7 @@ $(document).ready(function() {
                       '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'" name="inprice'+a+'">' +
                       '</div>' +
                       '<div class="col pl-0">' +
-                      '<input onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
+                      '<input id="'+a+'" onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
                       '</div>'+
                       '</div>'
                     );
@@ -561,16 +563,37 @@ $(document).ready(function() {
                   }
 
 
-
-
                 function REMOVECOL(c) {
-                    $("#package"+c).remove();
-                    a=a-1;
+
+
+                    var id = $('#hidden'+c).val();
+
+                    if(id){
+                    $.ajax({
+                            url:"{{ route('deletePackage') }}",
+                            method: "get",
+                            data:{id:id},
+                            success:function(data){
+                              console.log(data);
+
+                            },
+                            error: function(data){
+                              alert('ho');
+
+                              console.log(data);
+                          }
+                          });
+                    }
+                
+                    a--;
                     $('#dynamicValue').val(a);
                     $('#dynamicValue1').val(a);
+                    
+                    $("#package"+c).remove();
                     console.log(a);
 
                 }
+
 
 </script>
 @endsection

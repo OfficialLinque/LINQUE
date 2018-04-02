@@ -146,10 +146,17 @@ class DistributorController extends Controller
     public function deleteproduct(Request $request)
     {
       $item = item::find($request->input('id'));
-        $item->delete();
+      $item->delete();
     }
     public function searchproduct()
     {
+    }
+
+    public function deletePackage()
+    {   
+      $id = $_GET['id'];
+      $package = package::find($id);
+      $package->delete();
     }
 
 

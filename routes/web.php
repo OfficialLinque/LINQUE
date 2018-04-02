@@ -19,6 +19,7 @@ Route::post('addproduct', 'DistributorController@addproduct')->name('addproduct'
 Route::get('editproduct', 'DistributorController@editproduct')->name('editproduct');
 Route::post('editproduct1', 'DistributorController@editproduct1')->name('editproduct1');
 Route::get('deleteproduct', 'DistributorController@deleteproduct')->name('deleteproduct');
+Route::get('deletePackage', 'DistributorController@deletePackage')->name('deletePackage');
 Route::post('searchproduct', 'DistributorController@searchproduct')->name('searchproduct');
 
 Route::get('/location', 'DistributorController@location')->name('location');
