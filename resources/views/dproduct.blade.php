@@ -121,7 +121,7 @@
                                 <option value="23">Juice</option>
                             </select>
                         </div>
-                        <form>
+                        </form>
                         <div class="mb-2">
                             <p class="text-center text-primary lead" style="font-size: 15px;">Product Pack & Price</p>
                             <div id="EDITPPCOL" class="m-0">
@@ -190,16 +190,16 @@
   <i class="material-icons">add</i>
 </button>
 <!-- Modal -->
+
+<form id="add-product" method="POST">
 <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title" id="addLongTitle">Add Product</h5>
-      </div>
-      <div class="modal-body" style="height: 400px; overflow-y: scroll;">
-        <form id="uploadform">
+        <div class="modal-header">
+            <h5 class="modal-title" id="addLongTitle">Add Product</h5>
+        </div>
+        <div class="modal-body" style="height: 400px; overflow-y: scroll;">
         <input type="hidden" name="_token" value="{{ csrf_token()}}">
-          <input type="hidden" name="dynamicValue" id="dynamicValue" >
         <div class="text-center mb-2">
             <img id="fileimg" name="fileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
         </div>
@@ -211,91 +211,74 @@
             <div class="col pr-1">
                 <div class="form-group">
                     <label for="name" class="bmd-label-floating">Product Name</label>
-                    <input type="text" name="pname" class="form-control" id="pname">
+                    <input type="text" name="pname" class="form-control" id="pname" required>
                 </div>
             </div>
             <div class="col pl-1">
                 <div class="form-group">
                     <label for="name" class="bmd-label-floating">Product Quantity</label>
-                    <input type="number" name="pquantity" class="form-control" id="pquantity">
+                    <input type="number" name="pquantity" class="form-control" id="pquantity" required>
                 </div>
             </div>
         </div>
         <div class="form-group  mb-2">
             <label for="desc" class="bmd-label-floating">Product Description</label>
-            <textarea class="form-control" name="pdesc" id="desc" rows="3"></textarea>
+            <textarea class="form-control" name="pdesc" id="desc" rows="3" required></textarea>
         </div>
+        @if($producttypes)
         <div class="form-group  mb-3">
             <label for="type" class="bmd-label-floating">Product Type</label>
-            <select id="ptype" class="form-control" name="ptype">
-                <option selected hidden>Choose Type...</option>
-                <option value="1">Bakery and Bread</option>
-                <option value="2">Meat and Seafood</option>
-                <option value="3">Pasta and Rice</option>
-                <option value="4">Oils, Sauces, and Condiments</option>
-                <option value="5">Cereals and Breakfast foods</option>
-                <option value="6">Soup and Canned Goods</option>
-                <option value="7">Frozen Foods</option>
-                <option value="8">Dairy, Cheese and Eggs</option>
-                <option value="9">Snacks and Crakers</option>
-                <option value="10">Produce</option>
-
-                <option value="11">Dishwashing</option>
-                <option value="12">Haircare</option>
-                <option value="13">Healthcare products</option>
-                <option value="14">Household</option>
-                <option value="15">Laundry detergents</option>
-                <option value="16">Menstrual hygiene</option>
-                <option value="17">Skin care</option>
-
-                <option value="18">Beer</option>
-                <option value="19">Coffee </option>
-                <option value="20">Energy drink</option>
-                <option value="21">Water</option>
-                <option value="22">Softdrinks</option>
-                <option value="23">Juice</option>
+            <select id="ptype" class="form-control" name="ptype" required>            
+                <option selected hidden value="">Choose Type...</option>
+                @foreach($producttypes as $producttype)
+                <option value="{{$producttype->id}}">{{$producttype->prodtype}}</option>
+                @endforeach
             </select>
         </div>
-
+        @endif
         <div class="mb-2">
             <p class="text-center text-primary lead" style="font-size: 15px;">Product Pack & Price</p>
             <div id="ADDPPCOL" class="m-0">
-
             </div>
             <input id="ADDPP" type="button" class="btn btn-outline-primary btn-block" value="Add Product Pack & Price" />
         </div>
-
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button id="ADDPRODUCT" type="button" class="btn btn-primary">Add</button>
+        <button id="ADDPRODUCT" type="submit" class="btn btn-primary">Add</button>
       </div>
-    </form>
     </div>
   </div>
 </div>
+</form>
 @endsection
 
 @section('script')
 <script>
-    var a = 0;
 $(document).ready(function() {
-    $("#ADDPRODUCT").click(function(event) {
+    var a = 0;
+
+    $("form#add-product").submit(function(event) {
         event.preventDefault();
+
+        var data = $(this).serialize();
+        console.log(data);
+
+        return;
 
         $.ajax({
             type: "POST",
-            url: "{{ route('addproduct') }}",
-            dataType: "text",
+            url: "{{ route('product', 'add') }}",
+            dataType: "json",
             data: $('#uploadform').serialize(),
             success: function(data){
                 //  swal("Success!", "Record has been added to database", "success")
-                alert('hey');
-                $('#add').modal('hide');
+                // alert('hey');
+                // $('#add').modal('hide');
             },
             error: function(data){
                 //  swal("Oh no!", "Something went wrong, try again.", "error")
-                alert('ho');
+                // alert('ho');
             }
         });
 
@@ -339,8 +322,6 @@ $(document).ready(function() {
         });
     });
 
-});
-
     $('#file').on('change', function () {
       readURL(this);
     });
@@ -356,35 +337,29 @@ $(document).ready(function() {
 
     $('#ADDPP').on('click', function () {
         a++;
-      console.log(a);
+
         ADDPPCOL();
     });
 
     function ADDPPCOL() {
-
         $('#ADDPPCOL').append(
             '<div id="'+ a +'" class="row mb-2 parrow">' +
                 '<div id="package" class="col pr-2">' +
-                    '<input type="text" class="form-control" Placeholder="Package..." id="inpack'+a+'">' +
+                    '<input type="text" class="form-control" Placeholder="Package..." name="packagename[]" required>' +
                 '</div>' +
                 '<div id="price" class="col pl-0 pr-2">' +
-                    '<input type="text" class="form-control" Placeholder="Price..." id="inprice'+a+'">' +
+                    '<input type="number" class="form-control" Placeholder="Price..." name="packageprice[]" required>' +
                 '</div>' +
                 '<div class="col pl-0">' +
                     '<input onclick="REMOVECOL(' + a + ')" type="button" class="btn btn-sm btn-outline-danger btn-block" value="Remove"/>' +
                 '</div>'+
             '</div>'
         );
-
     }
 
     function REMOVECOL(c) {
         $("#"+c).remove();
-        a=a-1;
-        $('#dynamicValue').val(a);
-        console.log(a);
-
     }
-
+});
 </script>
 @endsection

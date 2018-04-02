@@ -27,8 +27,9 @@ class DistributorController extends Controller
     public function index()
     {
         $products = Product::where('sellerid', Auth::id())->get();
+        $producttypes = ProductType::all();
         
-        return view('dproduct', compact('products'));
+        return view('dproduct', compact('products', 'producttypes'));
     }
 
     public function get(Request $request) {        
@@ -44,39 +45,11 @@ class DistributorController extends Controller
         echo json_encode($product);
     }
 
-    public function addproduct(Request $request)
-    {
-        $a = $request->dynamicValue;
+    public function product(Request $request, $option = null) {
+        if($option === 'add') {
 
-        $item = new item;
-        $item->name = $request->pname;
-        $item->quantity = $request->pquantity;
-        $item->prod_type = $request->ptype;
-        //$item->img = $request->pimg;
-        $item->img = 'test';
-        $item->save();
-
-        $temp = DB::select('select MAX(id) as "temp" FROM items');
-        $package = new package;
-        for($i=1;$i<=$a;$i++)
-        {
-            $package->product_id= $request-> $temp+1;
-            $package->description = $request->inpack.i;
-            $package->price = $request->inprice.i;
-            $package->save();
         }
     }
-    public function editproduct()
-    {
-    }
-    public function deleteproduct()
-    {
-    }
-    public function searchproduct()
-    {
-    }
-
-
 
     public function location()
     {

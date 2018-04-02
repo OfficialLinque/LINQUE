@@ -15,10 +15,7 @@
 Auth::routes();
 
 Route::get('/', 'DistributorController@index')->name('product');
-Route::post('addproduct', 'DistributorController@addproduct')->name('addproduct');
-Route::post('editproduct', 'DistributorController@editproduct')->name('editproduct');
-Route::post('deleteproduct', 'DistributorController@deleteproduct')->name('deleteproduct');
-Route::post('searchproduct', 'DistributorController@searchproduct')->name('searchproduct');
+Route::post('product/{option}', 'DistributorController@product')->name('product');
 Route::get('data/product', 'DistributorController@get')->name('get_product');
 
 Route::get('/location', 'DistributorController@location')->name('location');
