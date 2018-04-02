@@ -114,9 +114,7 @@
                 success: function(result) {
                     var price = 0;
                     var items = "";
-                    console.log(result);
-                    console.log(result[0].product[0].prodname);
-                    console.log(result[0].seller.fname);
+
                     for(var x = 0; x < result.length; x++){
                         price += result[x].prodprice;
                     }
@@ -139,7 +137,6 @@
                                         '</div>'+
                                     '</div>';
                     }
-                    console.log(price);
 
                     $('#moreinfo #trans_no').text(result[0].transid);
                     $('#moreinfo #total_price').text(price);
