@@ -21,26 +21,45 @@
     <div class="container">
         <div class="row">
             <!-- START FOR LOOP HERE -->
-            <div class="col-md-4">
-                <div class="card mb-4 box-shadow text-light bg-dark">
-                    <div class="card-body">
-                        <p class="card-title lead">
-                            TRANS NO. 626418
-                        </p>
-                        <div class="d-flex justify-content-between align-items-center ">
-                            <div class="btn-group">
+            @if($trans)
+                @foreach($trans as $tran)
+                <div class="col-md-4">
+                    <div class="card mb-4 box-shadow text-light bg-dark">
+                        <div class="card-body">
+                            <p class="card-title lead">
+                                TRANS NO. {{$tran->transid}}
+                            </p>
+                            <p class="card-text">
+                                Seller: {{ucwords($tran->seller()->get()[0]->fname." ".$tran->seller()->get()[0]->lname)}}
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center ">
+                                <div class="btn-group">
 
-                                <button type="button" class="btn btn-sm btn-outline-light my-0"
-                                        data-toggle="modal" data-target="#moreinfo">
-                                        More Info
-                                </button>
-                                
+                                    <button type="button" class="btn btn-sm btn-outline-light my-0 moreinfo"
+                                            data-id="{{$tran->transid}}" data-toggle="modal" data-target="#moreinfo">
+                                            More Info
+                                    </button>
+                                    
+                                </div>
+                                <small class="text-white">
+                                @if($tran->created_at)
+                                    {{time_elapsed_string($tran->created_at)}}
+                                @else
+                                    null
+                                @endif
+                                </small>
                             </div>
-                            <small class="text-white">03/31/2018</small>
                         </div>
                     </div>
                 </div>
-            </div>
+                @endforeach
+            @endif
+
+
+
+
+
+
             <!-- Modal -->
             <div class="modal fade" id="moreinfo" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
@@ -48,54 +67,21 @@
                     <div class="modal-header border-bottom pb-3">
                         <div class=row>
                                 <div class="col-12">
-                                    <h5 class="modal-title mb-3" id="exampleModalLongTitle">TRANS NO. 123451</h5>
+                                    <input type="hidden" name="id" id="id" value="">
+                                    <h5 class="modal-title mb-3">TRANS NO. <span id="trans_no"></span></h5>
                                 </div>
                                 <div class="col-12">
-                                    <h5 class="modal-title" id="exampleModalLongTitle">Total Price: ₱ 10,000.00</h5>
+                                    <h5 class="modal-title">Total Price: ₱ <span id="total_price"></span></h5>
                                 </div>
                         </div>
                     </div>
                     <div class="modal-body" style="height: 400px; overflow-y: scroll;">
                         
-                        <div class="row">
-
+                        <div class="row items">
                             <!-- START FOR LOOP HERE -->
-                            <div class="col-12 border-bottom">
-                                <div class=row>
-                                    <div class="col-4">
-                                        <div class="text-center d-flex bg-white p-0 h-100">
-                                            <img src="img/coke.png" class="rounded img-fluid align-self-center">
-                                        </div>
-                                    </div>
-                                    <div class="col-8">
-                                        <p class="lead my-1">Lorem Ipsum Dolor </p>
-                                        <p class="my-1">Seller: Jane Doe </p>
-                                        <hr class="my-2">
-                                        <p class="my-1">Type: by box </p>
-                                        <p class="my-1">Quantity: 2 </p>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-12 border-bottom">
-                                <div class=row>
-                                    <div class="col-4">
-                                        <div class="text-center d-flex bg-white p-0 h-100">
-                                            <img src="img/coke.png" class="rounded img-fluid align-self-center">
-                                        </div>
-                                    </div>
-                                    <div class="col-8">
-                                        <p class="lead my-1">Lorem Ipsum Dolor </p>
-                                        <p class="my-1">Seller: Jay Doe </p>
-                                        <hr class="my-2">
-                                        <p class="my-1">Type: by box </p>
-                                        <p class="my-1">Quantity: 2 </p>
-                                    </div>
-                                </div>
-                            </div>
-                           
-
+                            
+                                    
                         </div>
-                        
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
@@ -107,4 +93,71 @@
         </div>
     </div>
 </div>
+@endsection
+
+@section('script')
+<script>
+    $(document).ready(function(e) {
+        $('button.moreinfo').click(function(e) {
+            $('#moreinfo .items').empty();
+            var trans_id = $(this).data('id');
+
+            $.ajax({
+                url: "{{route('get_transaction')}}",
+                method: "GET",
+                data: {trans_id: trans_id},
+                dataType: "json",
+                beforeSend: function() {
+                    $(".se-pre-con").css("opacity", '0.6');
+                    $(".se-pre-con").show("fast");
+                },
+                success: function(result) {
+                    var price = 0;
+                    var items = "";
+                    console.log(result);
+                    console.log(result[0].product[0].prodname);
+                    console.log(result[0].seller.fname);
+                    for(var x = 0; x < result.length; x++){
+                        price += result[x].prodprice;
+                    }
+                    
+                    for(var x = 0; x < result.length; x++){
+                        items +=    '<div class="col-12 border-bottom">'+
+                                        '<div class="row ">'+ 
+                                            '<div class="col-4">'+
+                                                '<div class="text-center d-flex bg-white p-0 h-100">'+
+                                                    '<img src="img/coke.png" class="rounded img-fluid align-self-center">'+
+                                                '</div>'+
+                                            '</div>'+
+                                            '<div class="col-8">'+
+                                                '<p class="lead my-1">'+result[x].product[0].prodname+'</p>'+
+                                                '<p class="my-1">Seller: '+result[x].seller.fname+' '+result[x].seller.lname+'</p>'+
+                                                '<hr class="my-2">'+
+                                                '<p class="my-1">Package: '+result[x].prodpack+'</p>'+
+                                                '<p class="my-1">Quantity: '+result[x].prodquantity+'</p>'+
+                                            '</div>'+
+                                        '</div>'+
+                                    '</div>';
+                    }
+                    console.log(price);
+
+                    $('#moreinfo #trans_no').text(result[0].transid);
+                    $('#moreinfo #total_price').text(price);
+                    $('#moreinfo .items').append(items);
+
+                    $(".se-pre-con").fadeOut("slow");
+
+                    $('#moreinfo').modal('show');
+                },
+                error: function(err) {
+                    $(".se-pre-con").fadeOut("slow");
+                }
+            });
+        })
+
+        function joinshit(){
+
+        }
+    });
+</script>
 @endsection

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Product;
 use App\Cart;
+use App\Transaction;
+use Illuminate\Support\Facades\DB;
 
 class RetailController extends Controller
 {
@@ -34,7 +36,6 @@ class RetailController extends Controller
     {   
         $carts = Cart::with('package', 'buyer')->get();
 
-        // echo json_encode($carts);
         return view('rcart', compact('carts'));
     }
     public function checkout()
@@ -43,11 +44,16 @@ class RetailController extends Controller
     }
     public function transaction()
     {
-        return view('rtransactions');
+        $trans = Transaction::groupBy('transid')->get();
+
+        return view('rtransactions')->with(compact('trans'));
     }
     public function rlocation()
     {
         return view('rlocation');
     }
 
+    public function get(Request $request){
+        
+    }
 }
