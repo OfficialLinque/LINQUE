@@ -14,7 +14,6 @@ class UsersTableSeeder extends Seeder
     {
         \DB::table('users')->insert(array (
 			0 => array (
-                'id' => 1,
                 'fname' => 'retailer',
                 'lname' => 'retailer',
                 'email' => 'retailer@gmail.com',
@@ -26,7 +25,6 @@ class UsersTableSeeder extends Seeder
                 'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ),
 			1 => array (
-                'id' => 2,
                 'fname' => 'distributor',
                 'lname' => 'distributor',
                 'email' => 'distributor@gmail.com',

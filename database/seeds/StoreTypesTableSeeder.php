@@ -14,13 +14,11 @@ class StoreTypesTableSeeder extends Seeder
     {
         \DB::table('storetypes')->insert(array (
 			0 => array (
-                'id' => 1,
 				'strtype' => 'Retailer',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),
             ),
 			1 => array (
-                'id' => 2,
 				'strtype' => 'Distributor',
 				'created_at' => Carbon::now()->format('Y-m-d H:i:s'),
 				'updated_at' => Carbon::now()->format('Y-m-d H:i:s'),

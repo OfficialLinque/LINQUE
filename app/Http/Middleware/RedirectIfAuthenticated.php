@@ -18,9 +18,13 @@ class RedirectIfAuthenticated
     public function handle($request, Closure $next, $guard = null)
     {
         if (Auth::guard($guard)->check()) {
-            return redirect('/');
+            
+            if(Auth::user()->strtype == 1){
+                return redirect()->route('purchase');
+            }elseif(Auth::user()->strtype == 2){
+                return redirect()->route('product');
+            }
         }
-
         return $next($request);
     }
 }

@@ -170,7 +170,7 @@
 </button>
 <!-- Modal -->
 
-<form id="add-product" method="POST">
+<form id="add-product" method="POST" action="{{route('product','add')}}">
 <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -252,7 +252,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "{{ route('product', 'add') }}",
+            url: "{{route('product','add')}}",
             dataType: "json",
             data: data,
             beforeSend: function() {
