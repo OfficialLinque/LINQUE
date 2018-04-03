@@ -17,7 +17,7 @@
     <!-- LOADING STYLE & SCRIPT -->
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
-    <link rel="stylesheet" href="{{ asset('assets/iziToast.min.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ asset('assets/iziToast.min.css') }}">
     <style>
 		.no-js #loader {
 			display: none;

@@ -11,6 +11,9 @@ use App\ProductType;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 
 class DistributorController extends Controller
 {
@@ -76,9 +79,20 @@ class DistributorController extends Controller
                 ]);
             }
 
+            $pimgfile = Input::file('pimg');
+            $pimgname = $request->pname;
+            $filename = $pimgname . '.jpg';
+
+            $image_resize = Image::make($pimgfile->getRealPath());
+            $image_resize->resize(1000,1000);
+
+            $destinationPath = '/LinquePics/';
+
+            $image_resize->save(public_path('LinquePics/' .$filename)); 
+
             $data = new Product();
             $data->sellerid = Auth::id();
-            $data->prodimg = 'testimg';
+            $data->prodimg = $filename;
             $data->prodname = $request->pname;
             $data->proddesc = $request->pdesc;
             $data->prodtype = $request->ptype;
@@ -122,11 +136,48 @@ class DistributorController extends Controller
             }
             
             $data = Product::find($request->epid);
-            $data->prodimg = 'testimg';
             $data->prodname = $request->epname;
             $data->proddesc = $request->epdesc;
             $data->prodtype = $request->ptype;
             $data->prodtotalquantity = $request->epquantity;
+
+            if(Input::hasFile('epimg')){
+                $img = Input::file('epimg');
+                $name = Input::get('epname');
+                $orgname = $request->file('epimg')->getClientOriginalName();
+
+                $filename = $name . ' - ' . $orgname . '.jpg';
+                $image = Image::make($img->getRealPath());
+                $image->resize(400,400);
+                $oldfilename = $data->prodimg;
+                
+                Storage::delete($oldfilename);
+
+                $image->save(public_path('LinquePics/' .$filename)); 
+
+                
+                $data->prodimg = $filename;
+                $data->prodname = $request->epname;
+            }
+            elseif(!($request->hasFile('epimg'))){
+                $editname = Input::get('epname');
+                 if($data->prodname != $editname){
+
+                    $imgname = Input::get('epname');
+                    $orgname = $request->epid;
+
+                    $oldfilename = $data->prodimg;
+
+                    $filename = $orgname . ' - ' . $imgname . '.jpg';
+
+                    Storage::move($oldfilename, $filename);
+
+                    $data->prodimg = $filename;
+                    $data->prodname = $request->epname;
+                    
+                 }
+            }
+            
             $productUpdate = $data->save();
 
             if($productUpdate) {
@@ -148,8 +199,8 @@ class DistributorController extends Controller
     {
             $a = $request->dynamicValue1;
 
-            $item = new item;
-            $item->sellerid =   Auth::user()->id;
+            $item = new Item;
+            $item->sellerid = Auth::user()->id;
             $item->prodname = $request->pname;
             $item->prodtotalquantity = $request->pquantity;
             $item->prodtype = $request->ptype;
@@ -172,7 +223,7 @@ class DistributorController extends Controller
                 $inprice="inprice".$i;
 
 
-                $package = new package;
+                $package = new Package;
                 $package->prodid = $temp;
                 $package->prodpack = $request->$inpack;
                 $package->prodprice = $request->$inprice;
@@ -241,7 +292,7 @@ class DistributorController extends Controller
                   $package->prodprice = $request->$inprice;
                   $package->save();
                 }else if($checker == 1){
-                  $package = package::find($request->$hidden);
+                  $package = Package::find($request->$hidden);
                   $package->prodid = $id;
                   $package->prodpack = $request->$inpack;
                   $package->prodprice = $request->$inprice;
@@ -252,11 +303,23 @@ class DistributorController extends Controller
             }
 
     }
-    public function deleteproduct(Request $request)
+    
+    //OLD CODE SA MASTER
+    /*public function deleteproduct(Request $request)
     {
       $item = Item::find($request->input('id'));
       $item->delete();
+    }*/
+
+    //BAGONG CODE GIKAN UPDATE
+    public function deleteproduct(Request $request){
+        $id = $request->id;
+        $items = Product::find($id);
+        $oldfilename = $items->prodimg;
+        Storage::delete($oldfilename);
+        $items->delete();
     }
+
     public function searchproduct()
     {
     }
