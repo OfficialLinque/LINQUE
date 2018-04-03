@@ -16,7 +16,7 @@ class Product extends Migration
         Schema::create('products', function (Blueprint $table) {
             $table->increments('id');
             $table->integer('sellerid');
-            $table->string('prodimg');
+            $table->string('prodimg')->nullable();
             $table->string('prodname');
             $table->string('proddesc');
             $table->integer('prodtype');

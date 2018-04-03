@@ -23,7 +23,7 @@
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow text-light bg-dark">
                         <div class="text-center bg-white p-0">
-                            <img style="height: 225px;" src="img/coke.png" class="rounded img-fluid">
+                            <img style="height: 225px;" src="@if($product->prodimg) {{$product->prodimg}} @else img/coke.png @endif" class="rounded img-fluid">
                         </div>
                         <div class="card-body">
                             <p class="card-title lead">
@@ -170,7 +170,7 @@
 </button>
 <!-- Modal -->
 
-<form id="add-product" method="POST">
+<form id="add-product" method="POST" enctype="multipart/form-data">
 <div class="modal fade" id="add" tabindex="-1" role="dialog" aria-labelledby="addLongTitle" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">
@@ -183,8 +183,8 @@
             <img id="fileimg" name="fileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
         </div>
         <div class="input-group mb-2">
-            <input id="pimg" name="pimg"  hidden type="file" accept="image/*"/>
-            <input type="button" class="btn btn-outline-primary btn-block" value="Upload Product Image" onclick="document.getElementById('file').click();" />
+            <input id="pimg" name="pimg" type="file" accept="image/*" value="img/wear.png" hidden/>
+            <input type="button" class="btn btn-outline-primary btn-block" value="Upload Product Image" onclick="document.getElementById('pimg').click();" />
         </div>
         <div class="row  mb-0">
             <div class="col pr-1">
@@ -248,23 +248,26 @@ $(document).ready(function() {
     $("form#add-product").submit(function(event) {
         event.preventDefault();
 
-        var data = $(this).serialize();
+        var data = new FormData($(this)[0]);
 
         $.ajax({
             type: "POST",
             url: "{{ route('product', 'add') }}",
             dataType: "json",
-            data: data,
+            data: data, 
+            contentType: false,  
+            cache: false,  
+            processData: false,  
             beforeSend: function() {
                 $(".se-pre-con").css("opacity", '0.6');
                 $(".se-pre-con").show("fast");
             },
             success: function(data){                
-                // $(".se-pre-con").fadeOut("slow");
+                $(".se-pre-con").fadeOut("slow");
 
                 $('#add').modal('hide');
 
-                window.location.reload();
+                // window.location.reload();
             },
             error: function(data){   
                 $(".se-pre-con").fadeOut("slow");

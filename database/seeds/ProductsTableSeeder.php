@@ -15,7 +15,6 @@ class ProductsTableSeeder extends Seeder
         \DB::table('products')->insert(array (
 			0 => array (
 				'sellerid' => 2,
-				'prodimg' => 'testimg',
 				'prodname' => 'Coca Cola',
 				'proddesc' => 'Coca Cola product',
 				'prodtype' => 12,
@@ -25,7 +24,6 @@ class ProductsTableSeeder extends Seeder
             ),
 			1 => array (
 				'sellerid' => 2,
-				'prodimg' => 'testimg',
 				'prodname' => 'Nagoya Sardines',
 				'proddesc' => 'sardinas gud ni',
 				'prodtype' => 6,
@@ -35,7 +33,6 @@ class ProductsTableSeeder extends Seeder
             ),
 			2 => array (
 				'sellerid' => 2,
-				'prodimg' => 'testimg',
 				'prodname' => 'Quickchow',
 				'proddesc' => 'noodles',
 				'prodtype' => 3,

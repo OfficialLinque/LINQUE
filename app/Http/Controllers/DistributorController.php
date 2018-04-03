@@ -3,12 +3,16 @@
 namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use League\Flysystem\Filesystem;
+use Srmklive\Dropbox\Client\DropboxClient;
+use Srmklive\Dropbox\Adapter\DropboxAdapter;
 use App\Product;
 use App\ProductPackage;
 use App\ProductType;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use Storage;
 
 class DistributorController extends Controller
 {
@@ -57,6 +61,7 @@ class DistributorController extends Controller
                 'ptype' => 'required|numeric',
                 'packagename' => 'required',
                 'packageprice' => 'required',
+                'pimg' => 'required',
                 ]
             );
 
@@ -67,9 +72,13 @@ class DistributorController extends Controller
                 ]);
             }
 
+            $filename = '11eiqaJu8OucM7pVGsL5BNWof0BRx6_Cl/product.'.$request->pimg->extension();
+            $mainDisk = Storage::disk('google')->put($filename, file_get_contents($request->file('pimg')->getRealPath()));
+            $url = Storage::disk('google')->url($filename);
+
             $data = new Product();
             $data->sellerid = Auth::id();
-            $data->prodimg = 'testimg';
+            $data->prodimg = ($url)?$url:null;
             $data->prodname = $request->pname;
             $data->proddesc = $request->pdesc;
             $data->prodtype = $request->ptype;
