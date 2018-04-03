@@ -23,7 +23,7 @@
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow text-light bg-dark">
                         <div class="text-center bg-white p-0">
-                            <img style="height: 225px;" src="{{ URL::to('/') }}/LinquePics/<?php echo $product->prodimg ?>" class="rounded img-fluid">
+                            <img style="height: 225px;" src="img/coke.png" class="rounded img-fluid">
                         </div>
                         <div class="card-body">
                             <p class="card-title lead">
@@ -56,7 +56,7 @@
                 @endforeach
             @endif
             <!-- Modal -->
-            <form id="edit-product" method="POST" enctype="multipart/form-data" action="{{ route('product', 'edit') }}">
+            <form id="edit-product" method="POST">
             <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editLongTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -65,16 +65,14 @@
                             <input type="hidden" name="epid">
                         </div>
                         <div class="modal-body" style="height: 400px; overflow-y: scroll;">
-                            <form id="editform">
+                            <form id="uploadform">
                             <input type="hidden" name="_token" value="{{ csrf_token()}}">
                             <div class="text-center mb-2">
                                 <img id="epfileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
                             </div>
                             <div class="input-group mb-2">
-                                <!-- <input id="file" name="epimg"  hidden type="file" accept="image/*"/>
-                                <input type="button" class="btn btn-outline-primary btn-block" value="Upload Product Image" onclick="document.getElementById('file').click();" /> -->
-                                <input type="file" name="epimg" accept="image/*" class="custom-file-input" id="pimg">
-                                <label class="custom-file-label" for="customFile">Choose file</label>
+                                <input id="file" name="epimg"  hidden type="file" accept="image/*"/>
+                                <input type="button" class="btn btn-outline-primary btn-block" value="Upload Product Image" onclick="document.getElementById('file').click();" />
                             </div>
                             <div class="row  mb-0">
                                 <div class="col pr-1">
@@ -383,23 +381,6 @@ $(document).ready(function() {
         });
     });
 
-     $('#edit-product').ajaxForm({
-        beforeSend: function() {
-            $(".se-pre-con").css("opacity", '0.6');
-            $(".se-pre-con").fadeIn("fast");
-        },
-        success: function(data){    
-            console.log(data);            
-            $(".se-pre-con").fadeOut("slow");
-            $('#edit').modal('hide');
-            window.location.reload();
-        },error: function(data){   
-            console.log(data);
-            $(".se-pre-con").fadeOut("slow");
-            $('#edit').modal('hide');
-        }
-    });
-
     $('form#edit-product').submit(function(e) {
         e.preventDefault();
 
@@ -464,57 +445,6 @@ $(document).ready(function() {
             $(this).parent().parent().remove();
         });
     }
-
-    $(document).on('click', '.delete1', function(){
-              var id = $(this).attr('id');
-              iziToast.show({
-                  theme: 'dark',
-                  icon: 'icon-person',
-                  title: 'Warning',
-                  message: 'Are you sure? (Changes beyond here are cannot be undone.)',
-                  position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
-                  progressBarColor: 'rgb(0, 255, 184)',
-                  buttons: [
-                      ['<button>Ok</button>', function (instance, toast) {
-
-                        $.ajax({
-                            url:"{{ route('deleteproduct') }}",
-                            method: "get",
-                            data:{id:id},
-                            success:function(data){
-                              instance.hide({
-                                  transitionOut: 'fadeOutUp',
-                                  onClosing: function(instance, toast, closedBy){
-                                      console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
-                                  }
-                              }, toast, 'buttonName');
-
-                              iziToast.success({
-                                title: 'Delete Complete',
-                                position: 'topCenter',
-                                message: 'Product removed from database.'
-                              });
-                            }
-                          })
-
-                      }, true], // true to focus
-                      ['<button>Close</button>', function (instance, toast) {
-                          instance.hide({
-                              transitionOut: 'fadeOutUp',
-                              onClosing: function(instance, toast, closedBy){
-                                  console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
-                              }
-                          }, toast, 'buttonName');
-                      }]
-                  ],
-                  onOpening: function(instance, toast){
-                      console.info('callback abriu!');
-                  },
-                  onClosing: function(instance, toast, closedBy){
-                      console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
-                  }
-              });
-          });
 });
 </script>
 @endsection

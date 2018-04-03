@@ -9,6 +9,9 @@ use App\ProductType;
 use DB;
 use Auth;
 use Carbon\Carbon;
+use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Storage;
 
 class DistributorController extends Controller
 {
@@ -67,9 +70,22 @@ class DistributorController extends Controller
                 ]);
             }
 
+            $pimgfile = Input::file('pimg');
+            $pimgname = $request->pname;
+            $filename = $pimgname . '.jpg';
+
+            $image_resize = Image::make($pimgfile->getRealPath());
+            $image_resize->resize(400,400);
+
+            $destinationPath = '/LinquePics/';
+
+            $image_resize->save(public_path('LinquePics/' .$filename)); 
+
+
+
             $data = new Product();
             $data->sellerid = Auth::id();
-            $data->prodimg = 'testimg';
+            $data->prodimg = $filename;
             $data->prodname = $request->pname;
             $data->proddesc = $request->pdesc;
             $data->prodtype = $request->ptype;
@@ -91,7 +107,7 @@ class DistributorController extends Controller
 
                 echo json_encode($prodpackageInsert);
             } else echo json_encode(false);
-        } else if($option === 'edit') {
+        }else if($option === 'edit') {
             $validator = $request->validate([
                 'epid' => 'required|numeric',
                 'epname' => 'required',
@@ -111,13 +127,52 @@ class DistributorController extends Controller
                     'packageprice.'.$key => 'required|numeric',
                 ]);
             }
-            
+
             $data = Product::find($request->epid);
-            $data->prodimg = 'testimg';
+
             $data->prodname = $request->epname;
             $data->proddesc = $request->epdesc;
             $data->prodtype = $request->ptype;
             $data->prodtotalquantity = $request->epquantity;
+
+            if(Input::hasfile('epimg')){
+                $epimg = Input::file('epimg');
+                $epname = $request->epname;
+
+                $destinationPath = '/LinquePics/';
+                $filename = $epname . '.jpg';
+                $data->prodimg = $filename;
+                $image = $request->file('epimg');
+
+                $image_resize = Image::make($image->getRealPath());
+                $image_resize->resize(400,400);
+
+                $image_resize->save(public_path('LinquePics/' .$filename));
+
+                $oldfilename = $data->prodimg;
+                Storage::delete($oldfilename);            
+                
+            }
+            else if(!(Input::hasfile('epimg') && Input::hasfile('epimg')->isValid())){
+                 if($data->isDirty('epname')){
+                    //Get the new File Name and Date updated
+                    $picname = Input::get('epname');
+
+                    //Get old filename
+                    $oldfilename = $data->prodimg;
+                    
+
+                    //Rename the file
+                    $filename = $picname . '.jpg';
+                    $data->prodimg = $filename;
+                    //Update the file
+                    Storage::move($oldfilename, $filename);
+                    
+                 } 
+            }
+            
+            
+            
             $productUpdate = $data->save();
 
             if($productUpdate) {
@@ -133,6 +188,19 @@ class DistributorController extends Controller
                 echo json_encode($prodpackageUpdate);
             } else echo json_encode(false);
         }
+        
+    }
+
+    public function deleteproducts(){
+            $id = $_GET['id'];
+            $item = Product::find($id);
+
+            $oldfilename = $item->prodimg;
+            Storage::delete($oldfilename);
+
+            $item->delete();
+            $package = ProductPackage::find($id);
+            $package->delete();
     }
 
     public function location()
