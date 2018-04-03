@@ -48,7 +48,7 @@ class CartController extends Controller
             $cart = $data->save();
             
             if($cart) {
-                return true;
+                return "true";
             } else return false;
         } else if($option === 'delete') {
             $check = array();
@@ -77,21 +77,36 @@ class CartController extends Controller
              $productni = DB::table('prodpackprice')
             ->join('products', 'prodpackprice.prodid', '=', 'products.id')
             ->join('carts', 'prodpackprice.id', '=', 'carts.prodpackid')
-            ->select('carts.*', 'products.prodname', 'prodpackprice.prodprice')
+            ->select('carts.prodpackid','carts.prodquantity','carts.buyerid', 'products.prodname','products.id','carts.id as cart_id', 'prodpackprice.prodprice')
             ->where('carts.id', '=', $id)
             ->first();
-            echo json_encode($productni);
+
+            $package = DB::table('prodpackprice')
+            ->join('products', 'prodpackprice.prodid', '=', 'products.id')
+            ->select('prodpackprice.prodpack','prodpackprice.prodprice' ,'prodpackprice.id')
+            ->where('prodpackprice.prodid', '=', $productni->id)
+            ->get();
+            
+            $data = array();
+            $data['product'] = $productni;
+            $data['package'] = $package;
+            echo json_encode($data);
+
+
+            
         } else if($option === 'update') {
             $id = $request->input('updateid');           
-        $produkto = Cart::where('id',$id)->first();
+            $produkto = Cart::where('id',$id)->first();
+
               if($produkto) {            
-                   //$produkto->prodpackid = $request->package;
+                   $produkto->prodpackid = $request->package;
                     $produkto->prodquantity = $request->updatequantity;
                     $cart = $produkto->save();
-                     
-
+                    echo json_encode(true); 
         }
-            echo json_encode(true);
+
+            echo json_encode($request->package);
+            
         
     }else if($option === 'checkout') {
              $productni = DB::table('prodpackprice')

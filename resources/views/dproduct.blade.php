@@ -252,7 +252,7 @@ $(document).ready(function() {
 
         $.ajax({
             type: "POST",
-            url: "{{ route('product', 'add') }}",
+            url: "{{route('product','add')}}",
             dataType: "json",
             data: data, 
             contentType: false,  
