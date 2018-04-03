@@ -19,7 +19,7 @@
 
 <div class="album mt-4 py-5 bg-light">
     <div class="container">
-        <div class="row">
+        <div class="row"> 
             @if($carts)
                 @foreach($carts as $cart)
                 <div class="col-md-4 ">
@@ -182,42 +182,26 @@ $('document').ready(function() {
                      var package = "";
                     console.log(result.product);
                     var len=Object.keys(result.package).length;
-                    console.log(len);
+                    console.log(result.package);
                     $('h5.productName').text(result.product.prodname);
                     $('input[id="updatequantity"]').val(result.product.prodquantity);                           
-                    // $('input[id="pradio1"]').val(result.package[0].id);
-                    // $('input[id="pradio2"]').val(result.package[1].id);
-                    // $('input[id="pradio3"]').val(result.package[2].id);
                     $('input[name="updateid"]').val(result.product.cart_id);
-
-                    // <div class="custom-control custom-radio my-1 w-100 ml-3">
-                    //                             <input type="radio" id="pradio3" name="package" value="" class="custom-control-input packageradio">
-                    //                             <label class="custom-control-label w-100" for="pradio3">
-                    //                                 <div class="row w-100">
-                    //                                     <div class="col-6">
-                    //                                     Package 3
-                    //                                     </div>
-                    //                                     <div class="col-6 pack3">
-                    //                                     loading...
-                    //                                     </div>
-                    //                                 </div>
-                    //                             </label>
-                                                
-                    //                         </div>
-
-
+                    
                     for(var x=0;x<len;x++){
-
+                        
+                        console.log(result.package[x].id);
+                        console.log(result.product.prodpackid);
                         package += '<div class="custom-control custom-radio my-1 w-100 ml-3">'+
                             ' <input type="radio" id="pradio'+x+'" value="'+result.package[x].id+'" name="package" class="custom-control-input packageradio">'+
-                            '<label class="custom-control-label w-100" for="pradio'+x+'">'+'<div class="row w-100">'+'<div class="col-12">'+(result.package[x].prodpack)+'</div>'+'<div class="col-12">'+(result.package[x].prodprice).toLocaleString('en')+'.00'+'</div>'+'</div>'+'</label>'+'</div>';
-                                                  
+                            '<label class="custom-control-label w-100" for="pradio'+x+'">'+'<div class="row w-100">'+'<div class="col-12">'+(result.package[x].prodpack)+
+                            '</div>'+'<div class="col-12">'+(result.package[x].prodprice).toLocaleString('en')+'.00'+'</div>'+'</div>'+'</label>'+'</div>';
+                          if(result.product.prodpackid==result.package[x].id){
+                            $('#pradio'+x+'').attr('checked', 'checked');
+                            
+                        }                        
                        
                     }
                     $('#edit .packagedisplay').html(package);
-                    // $('div.pack1').text('₱ '+(result.package[0].prodprice).toLocaleString('en')+'.00');
-                    // $('div.pack2').text('₱ '+(result.package[1].prodprice).toLocaleString('en')+'.00');
-                    // $('div.pack3').text('₱ '+(result.package[2].prodprice).toLocaleString('en')+'.00');
                     $(".se-pre-con").fadeOut("slow");
                 },
                 error: function(err) {
@@ -243,7 +227,7 @@ $('document').ready(function() {
                         },
                         success: function(result) {
                             console.log(result);
-                            $('#edit').modal('hide');
+                            $('.editProductModal').modal('hide');
                             $(".se-pre-con").fadeOut("slow");
                         },
                         error: function(err) {
@@ -261,7 +245,6 @@ $('document').ready(function() {
             },
                 url: "{{route('cart_crud', 'checkout')}}",
                 method: "POST",
-                //data:{'id': id},
                 dataType: "json",
                 beforeSend: function() {
                     $(".se-pre-con").css("opacity", '0.6');
