@@ -14,6 +14,7 @@ class Transaction extends Migration
     public function up()
     {
         Schema::create('transactions', function (Blueprint $table) {
+            $table->increments('id');
             $table->integer('transid');
             $table->integer('buyerid');
             $table->integer('prodid');
@@ -21,7 +22,6 @@ class Transaction extends Migration
             $table->integer('prodprice');
             $table->integer('prodquantity');
             $table->integer('sellerid');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

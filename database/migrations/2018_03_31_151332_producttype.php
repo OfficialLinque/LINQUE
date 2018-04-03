@@ -14,9 +14,8 @@ class Producttype extends Migration
     public function up()
     {
         Schema::create('producttypes', function (Blueprint $table) {
-            $table->increments('prodid');
+            $table->increments('id');
             $table->string('prodtype');
-            $table->rememberToken();
             $table->timestamps();
         });
     }

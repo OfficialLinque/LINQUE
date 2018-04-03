@@ -17,6 +17,7 @@
     <!-- LOADING STYLE & SCRIPT -->
     <script src="https://code.jquery.com/jquery-3.2.1.js"></script>
 	<script src="http://cdnjs.cloudflare.com/ajax/libs/modernizr/2.8.2/modernizr.js"></script>
+    <link rel="stylesheet" href="{{ asset('assets/iziToast.min.css') }}">
     <style>
 		.no-js #loader {
 			display: none;
@@ -103,6 +104,7 @@
     <script async defer
     src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDz43XZBpKwAsWxokyUqFYcZuzlJKm3Y24&callback=initMap">
     </script>
+    <script src="{{ asset('assets/iziToast.min.js') }}" type="text/javascript"></script>
     @yield('script')
   </body>
 </html>

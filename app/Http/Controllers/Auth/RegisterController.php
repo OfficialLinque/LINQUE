@@ -28,7 +28,15 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/';
+    //protected $redirectTo = '/';
+    protected function registered(Request $request, $user)
+    {
+        if ($user->strtype == 1) {
+            return redirect()->route('rhome');
+        }else if ($user->strtype == 2) {
+            return redirect()->route('dhome');
+        }
+    }
 
     /**
      * Create a new controller instance.

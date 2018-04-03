@@ -4,14 +4,16 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 
-class item extends Model
+class Item extends Model
 {
     protected $primaryKey = 'id';
-    protected $table = 'items';
+    protected $table = 'products';
     protected $fillable = array(
-      'name',
-      'quantity',
-      'prod_type',
-      'img',
+        'prodname',
+        'prodtotalquantity',
+        'prodtype',
+        'proddesc',
+        'sellerid',
+        'prodimg',
     );
 }
