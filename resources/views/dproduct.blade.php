@@ -73,8 +73,8 @@
                             <div class="input-group mb-2">
                                 <!-- <input id="file" name="epimg"  hidden type="file" accept="image/*"/>
                                 <input type="button" class="btn btn-outline-primary btn-block" value="Upload Product Image" onclick="document.getElementById('file').click();" /> -->
-                                <input type="file" name="epimg" accept="image/*" class="custom-file-input" id="pimg">
-                                <label class="custom-file-label" for="customFile">Choose file</label>
+                                <input type="file" name="epimg" accept="image/*" class="custom-file-input" id="epimg">
+                                <label class="custom-file-label" for="customFile" onclick="document.getElementById('epimg').click();" >Choose file</label>
                             </div>
                             <div class="row  mb-0">
                                 <div class="col pr-1">
@@ -187,7 +187,7 @@
         </div>
         <div class="custom-file">
             <input type="file" name="pimg" accept="image/*" class="custom-file-input" id="pimg">
-            <label class="custom-file-label" for="customFile" onclick="document.getElementById('#pimg')">Choose file</label>
+            <label class="custom-file-label" for="customFile" onclick="document.getElementById('pimg').click();">Choose file</label>
         </div>
         <div class="row  mb-0">
             <div class="col pr-1">
@@ -428,12 +428,25 @@ $(document).ready(function() {
     $('#pimg').on('change', function () {
       readURL(this);
     });
+    $('#epimg').on('change', function () {
+      readURL1(this);
+    });
 
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
             $('#fileimg').attr('src', e.target.result);
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+     function readURL1(input) {
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+            $('#epfileimg').attr('src', e.target.result);
             }
             reader.readAsDataURL(input.files[0]);
         }
