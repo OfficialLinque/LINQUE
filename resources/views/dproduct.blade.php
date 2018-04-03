@@ -419,7 +419,6 @@ $(document).ready(function() {
                 window.location.reload();
             },
             error: function(err) {
-                alert('error');
                 $(".se-pre-con").fadeOut("slow");
             }
         });
@@ -465,56 +464,57 @@ $(document).ready(function() {
         });
     }
 
-    $(document).on('click', '.delete1', function(){
-              var id = $(this).attr('id');
-              iziToast.show({
-                  theme: 'dark',
-                  icon: 'icon-person',
-                  title: 'Warning',
-                  message: 'Are you sure? (Changes beyond here are cannot be undone.)',
-                  position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
-                  progressBarColor: 'rgb(0, 255, 184)',
-                  buttons: [
-                      ['<button>Ok</button>', function (instance, toast) {
+    $(document).on('click', '.product_delete', function(){
+          var id = $(this).attr('id');
+          iziToast.show({
+             theme: 'dark',
+             icon: 'icon-person',
+             title: 'Warning',
+             message: 'Are you sure? (Changes beyond here are cannot be undone.)',
+             position: 'center', // bottomRight, bottomLeft, topRight, topLeft, topCenter, bottomCenter
+             progressBarColor: 'rgb(0, 255, 184)',
+             buttons: [
+                ['<button>Ok</button>', function (instance, toast) {
 
-                        $.ajax({
-                            url:"{{ route('deleteproduct') }}",
-                            method: "get",
-                            data:{id:id},
-                            success:function(data){
-                              instance.hide({
-                                  transitionOut: 'fadeOutUp',
-                                  onClosing: function(instance, toast, closedBy){
-                                      console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
-                                  }
-                              }, toast, 'buttonName');
+                  $.ajax({
+                     url:"{{ route('deleteproduct') }}",
+                     method: "get",
+                     data:{id:id},
+                     success:function(data){
+                       instance.hide({
+                          transitionOut: 'fadeOutUp',
+                          onClosing: function(instance, toast, closedBy){
+                             console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
+                          }
+                       }, toast, 'buttonName');
 
-                              iziToast.success({
-                                title: 'Delete Complete',
-                                position: 'topCenter',
-                                message: 'Product removed from database.'
-                              });
-                            }
-                          })
+                       iziToast.success({
+                        title: 'Delete Complete',
+                        position: 'topCenter',
+                        message: 'Product removed from database.'
+                       });
+                     }
+                    })
 
-                      }, true], // true to focus
-                      ['<button>Close</button>', function (instance, toast) {
-                          instance.hide({
-                              transitionOut: 'fadeOutUp',
-                              onClosing: function(instance, toast, closedBy){
-                                  console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
-                              }
-                          }, toast, 'buttonName');
-                      }]
-                  ],
-                  onOpening: function(instance, toast){
-                      console.info('callback abriu!');
-                  },
-                  onClosing: function(instance, toast, closedBy){
-                      console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
-                  }
-              });
+                }, true], // true to focus
+                ['<button>Close</button>', function (instance, toast) {
+                    instance.hide({
+                       transitionOut: 'fadeOutUp',
+                       onClosing: function(instance, toast, closedBy){
+                          console.info('closedBy: ' + closedBy); // The return will be: 'closedBy: buttonName'
+                       }
+                    }, toast, 'buttonName');
+                }]
+             ],
+             onOpening: function(instance, toast){
+                console.info('callback abriu!');
+             },
+             onClosing: function(instance, toast, closedBy){
+                console.info('closedBy: ' + closedBy); // tells if it was closed by 'drag' or 'button'
+             }
           });
+       });
+
 });
 </script>
 @endsection

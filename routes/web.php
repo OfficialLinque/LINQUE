@@ -17,7 +17,7 @@ Auth::routes();
 Route::get('/', 'DistributorController@index')->name('product');
 Route::post('product/{option}', 'DistributorController@product')->name('product');
 Route::get('data/product', 'DistributorController@get')->name('get_product');
-Route::get('delete', 'DistributorController@deleteproducts')->name('deleteproduct');
+Route::get('delete', 'DistributorController@deleteproduct')->name('deleteproduct');
 
 Route::get('/location', 'DistributorController@location')->name('location');
 Route::get('/order', 'DistributorController@order')->name('order');

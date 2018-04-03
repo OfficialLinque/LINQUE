@@ -129,50 +129,47 @@ class DistributorController extends Controller
             }
 
             $data = Product::find($request->epid);
-
+            
             $data->prodname = $request->epname;
             $data->proddesc = $request->epdesc;
             $data->prodtype = $request->ptype;
             $data->prodtotalquantity = $request->epquantity;
 
-            if(Input::hasfile('epimg')){
-                $epimg = Input::file('epimg');
-                $epname = $request->epname;
+            if(Input::hasFile('epimg')){
+                $img = Input::file('epimg');
+                $name = Input::get('epname');
 
-                $destinationPath = '/LinquePics/';
-                $filename = $epname . '.jpg';
-                $data->prodimg = $filename;
-                $image = $request->file('epimg');
-
-                $image_resize = Image::make($image->getRealPath());
-                $image_resize->resize(400,400);
-
-                $image_resize->save(public_path('LinquePics/' .$filename));
-
+                $filename = $name . '.jpg';
+                $image = Image::make($img->getRealPath());
+                $image->resize(400,400);
                 $oldfilename = $data->prodimg;
-                Storage::delete($oldfilename);            
                 
-            }
-            else if(!(Input::hasfile('epimg') && Input::hasfile('epimg')->isValid())){
-                 if($data->isDirty('epname')){
-                    //Get the new File Name and Date updated
-                    $picname = Input::get('epname');
+                Storage::delete($oldfilename);
 
-                    //Get old filename
+                $image->save(public_path('LinquePics/' .$filename)); 
+
+                
+                $data->prodimg = $filename;
+                $data->prodname = $request->epname;
+            }
+            elseif(!($request->hasFile('epimg') && $request->file('epimg')->isValid())){
+                // if($data->isDirty('epname')){
+
+                    $imgname = Input::get('epname');
+
                     $oldfilename = $data->prodimg;
-                    
+                    $filename = $imgname . '.jpg';
 
-                    //Rename the file
-                    $filename = $picname . '.jpg';
-                    $data->prodimg = $filename;
-                    //Update the file
                     Storage::move($oldfilename, $filename);
+
+                    $data->prodimg = $filename;
+                    $data->prodname = $request->epname;
                     
-                 } 
+                // }
             }
             
-            
-            
+           
+
             $productUpdate = $data->save();
 
             if($productUpdate) {
@@ -191,16 +188,15 @@ class DistributorController extends Controller
         
     }
 
-    public function deleteproducts(){
-            $id = $_GET['id'];
-            $item = Product::find($id);
+    public function deleteproduct(Request $request){
+            
+            $item = Product::find($request->input('id'));
 
             $oldfilename = $item->prodimg;
+
             Storage::delete($oldfilename);
 
             $item->delete();
-            $package = ProductPackage::find($id);
-            $package->delete();
     }
 
     public function location()
