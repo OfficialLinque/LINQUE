@@ -75,7 +75,7 @@ class DistributorController extends Controller
             $filename = $pimgname . '.jpg';
 
             $image_resize = Image::make($pimgfile->getRealPath());
-            $image_resize->resize(400,400);
+            $image_resize->resize(1000,1000);
 
             $destinationPath = '/LinquePics/';
 
