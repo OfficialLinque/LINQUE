@@ -44,9 +44,9 @@ class RetailController extends Controller
     }
     public function transaction()
     {
-        $trans = Transaction::orderBy('id')->groupBy('transid')->get();
+        // $trans = Transaction::orderBy('id')->groupBy('transid')->get();
 
-        return view('rtransactions')->with(compact('trans'));
+        return view('rtransactions');
     }
     public function rlocation()
     {
