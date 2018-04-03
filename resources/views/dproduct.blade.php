@@ -40,7 +40,7 @@
                                     <button type="button" class="btn btn-sm btn-outline-light product_edit" data-id="{{$product->id}}">
                                         <i class="material-icons">edit</i>
                                     </button>
-                                    <button type="button" class="btn btn-sm btn-outline-light product_delete" data-id="{{$product->id}}"><i class="material-icons">delete</i></button>
+                                    <button type="button" class="btn btn-sm btn-outline-light product_delete" id="{{$product->id}}" ><i class="material-icons">delete</i></button>
                                 </div>
                                 <small class="text-white">
                                 @if($product->created_at)
@@ -138,7 +138,7 @@
                                 <div class=row>
                                     <div class="col-4">
                                         <div class="text-center d-flex bg-white p-0 h-100">
-                                            <img src="img/coke.png" class="rounded img-fluid align-self-center">
+                                            <img src="{{ URL::to('/') }}/LinquePics/<?php echo $product->prodimg ?>"" class="rounded img-fluid align-self-center">
                                         </div>
                                     </div>
                                     <div class="col-8">
@@ -187,7 +187,7 @@
         </div>
         <div class="custom-file">
             <input type="file" name="pimg" accept="image/*" class="custom-file-input" id="pimg">
-            <label class="custom-file-label" for="customFile">Choose file</label>
+            <label class="custom-file-label" for="customFile" onclick="document.getElementById('#pimg')">Choose file</label>
         </div>
         <div class="row  mb-0">
             <div class="col pr-1">
@@ -419,6 +419,7 @@ $(document).ready(function() {
                 window.location.reload();
             },
             error: function(err) {
+                alert('error');
                 $(".se-pre-con").fadeOut("slow");
             }
         });

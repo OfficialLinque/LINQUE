@@ -138,8 +138,9 @@ class DistributorController extends Controller
             if(Input::hasFile('epimg')){
                 $img = Input::file('epimg');
                 $name = Input::get('epname');
+                $orgname = $request->file('epimg')->getClientOriginalName();
 
-                $filename = $name . '.jpg';
+                $filename = $name . ' - ' . $orgname . '.jpg';
                 $image = Image::make($img->getRealPath());
                 $image->resize(400,400);
                 $oldfilename = $data->prodimg;
@@ -152,20 +153,23 @@ class DistributorController extends Controller
                 $data->prodimg = $filename;
                 $data->prodname = $request->epname;
             }
-            elseif(!($request->hasFile('epimg') && $request->file('epimg')->isValid())){
-                // if($data->isDirty('epname')){
+            elseif(!($request->hasFile('epimg'))){
+                $editname = Input::get('epname');
+                 if($data->prodname != $editname){
 
                     $imgname = Input::get('epname');
+                    $orgname = $request->epid;
 
                     $oldfilename = $data->prodimg;
-                    $filename = $imgname . '.jpg';
+
+                    $filename = $orgname . ' - ' . $imgname . '.jpg';
 
                     Storage::move($oldfilename, $filename);
 
                     $data->prodimg = $filename;
                     $data->prodname = $request->epname;
                     
-                // }
+                 }
             }
             
            
@@ -189,14 +193,16 @@ class DistributorController extends Controller
     }
 
     public function deleteproduct(Request $request){
-            
-            $item = Product::find($request->input('id'));
 
-            $oldfilename = $item->prodimg;
+            $id = $request->id;
+            
+            $items = Product::find($id);
+
+            $oldfilename = $items->prodimg;
 
             Storage::delete($oldfilename);
 
-            $item->delete();
+            $items->delete();
     }
 
     public function location()
