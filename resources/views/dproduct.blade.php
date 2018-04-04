@@ -137,7 +137,9 @@
                                 <div class=row>
                                     <div class="col-4">
                                         <div class="text-center d-flex bg-white p-0 h-100">
+                                        @if (count($producttype) == 0)
                                         <img src="{{ URL::to('/') }}/LinquePics/<?php echo $product->prodimg ?>" class="rounded img-fluid align-self-center">
+                                        @endif
                                         </div>
                                     </div>
                                     <div class="col-8">
