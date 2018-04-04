@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Auth;
 use App\Cart;
 use App\Transaction;
+use App\Product;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
 
@@ -116,8 +117,9 @@ class CartController extends Controller
             ->select('carts.prodquantity','carts.buyerid', 'products.*', 'prodpackprice.prodprice','prodpackprice.prodpack','users.fname','users.lname')
             // ->where('carts.id', '=', $id)
             ->get();
-$randomnumber = mt_rand(100000, 999999);
-$count = 3;
+
+            
+            $randomnumber = mt_rand(100000, 999999);
               foreach ($productni as $key => $value) {
                 $data = new Transaction();
                 $data->transid = $randomnumber;
@@ -127,10 +129,15 @@ $count = 3;
                 $data->prodprice = $productni[$key]->prodprice;             
                 $data->prodquantity = $productni[$key]->prodquantity;
                 $data->sellerid = $productni[$key]->sellerid; 
-                $cart = $data->save(); 
+               $cart = $data->save(); 
+                $products = Product::where('id',$productni[$key]->id)->first();
+                 $products->prodtotalquantity = ($products->prodtotalquantity-$productni[$key]->prodquantity);
+                 $updatedquantity = $products->save();
+
 
                  if($cart) {
               Cart::truncate();
+
             } else return false;             
             }
              
