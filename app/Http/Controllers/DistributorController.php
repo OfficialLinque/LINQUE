@@ -117,6 +117,7 @@ class DistributorController extends Controller
                 'packageid' => 'required',
                 'packagename' => 'required',
                 'packageprice' => 'required',
+                'pimg' => 'required',
                 ]
             );
 
@@ -128,8 +129,12 @@ class DistributorController extends Controller
                 ]);
             }
             
+            $filename = '11eiqaJu8OucM7pVGsL5BNWof0BRx6_Cl/product.'.$request->pimg->extension();
+            $mainDisk = Storage::disk('google')->put($filename, file_get_contents($request->file('pimg')->getRealPath()));
+            $url = Storage::disk('google')->url($filename);
+            
             $data = Product::find($request->epid);
-            $data->prodimg = 'testimg';
+            $data->prodimg = ($url)?$url:null;
             $data->prodname = $request->epname;
             $data->proddesc = $request->epdesc;
             $data->prodtype = $request->ptype;

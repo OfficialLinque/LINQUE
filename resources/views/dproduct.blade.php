@@ -65,10 +65,9 @@
                             <input type="hidden" name="epid">
                         </div>
                         <div class="modal-body" style="height: 400px; overflow-y: scroll;">
-                            <form id="uploadform">
                             <input type="hidden" name="_token" value="{{ csrf_token()}}">
                             <div class="text-center mb-2">
-                                <img id="epfileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
+                                <img class="rounded img-fluid preview" style="height: 225px;" src="img/wear.png">
                             </div>
                             <div class="input-group mb-2">
                                 <input id="file" name="epimg"  hidden type="file" accept="image/*"/>
@@ -180,7 +179,7 @@
         <div class="modal-body" style="height: 400px; overflow-y: scroll;">
         <input type="hidden" name="_token" value="{{ csrf_token()}}">
         <div class="text-center mb-2">
-            <img id="fileimg" name="fileimg" style="height: 225px;" src="img/wear.png" class="rounded img-fluid">
+            <img class="rounded img-fluid preview" name="fileimg" style="height: 225px;" src="img/wear.png">
         </div>
         <div class="input-group mb-2">
             <input id="pimg" name="pimg" type="file" accept="image/*" value="img/wear.png" hidden/>
@@ -385,15 +384,15 @@ $(document).ready(function() {
         });
     });
 
-    $('#file').on('change', function () {
-      readURL(this);
+    $('input[type="file"]').on('change', function () {
+        readURL(this);
     });
 
     function readURL(input) {
         if (input.files && input.files[0]) {
             var reader = new FileReader();
             reader.onload = function (e) {
-            $('#fileimg').attr('src', e.target.result);
+                $(input).parent().parent().find('.preview').attr('src', e.target.result);
             }
             reader.readAsDataURL(input.files[0]);
         }
