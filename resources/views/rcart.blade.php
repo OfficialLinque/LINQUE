@@ -29,7 +29,7 @@
                                 <div class=row>
                                     <div class="col-5 p-0">
                                         <div class="text-center d-flex bg-white p-0 h-100">
-                                            <img src="img/coke.png" class="rounded img-fluid align-self-center">
+                                            <img src="@if($cart->package->product()->get()[0]->prodimg) {{$cart->package->product()->get()[0]->prodimg}} @else img/noimage.jpg @endif" class="rounded img-fluid align-self-center">
                                         </div>
                                     </div>
                                     <div class="col-7">

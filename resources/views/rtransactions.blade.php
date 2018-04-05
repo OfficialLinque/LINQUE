@@ -110,11 +110,12 @@
                     }
                     
                     for(var x = 0; x < result.length; x++){
+                        var img = (result[x].product[0].prodimg)?result[x].product[0].prodimg:'img/noimage.jpg';
                         items +=    '<div class="col-12 border-bottom">'+
                                         '<div class="row ">'+ 
                                             '<div class="col-4">'+
                                                 '<div class="text-center d-flex bg-white p-0 h-100">'+
-                                                    '<img src="img/coke.png" class="rounded img-fluid align-self-center">'+
+                                                    '<img src="'+img+'" class="rounded img-fluid align-self-center">'+
                                                 '</div>'+
                                             '</div>'+
                                             '<div class="col-8">'+

@@ -17,7 +17,15 @@ class RetailController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+           $user= auth()->user();
+
+           if($user->strtype != 1){
+                return back();
+           }
+
+           return $next($request);
+        });
     }
 
     /**
@@ -27,7 +35,7 @@ class RetailController extends Controller
      */
     public function purchase()
     {
-        $products = Product::with('type', 'package')->get();
+        $products = Product::with('type', 'package')->orderBy('created_at', 'desc')->get();
 
         return view('rpurchase', compact('products'));
     }
@@ -38,10 +46,7 @@ class RetailController extends Controller
 
         return view('rcart', compact('carts'));
     }
-    public function checkout()
-    {
-
-    }
+    
     public function transaction()
     {
         $trans = Transaction::orderBy('id')->groupBy('transid')->get();
@@ -51,9 +56,5 @@ class RetailController extends Controller
     public function rlocation()
     {
         return view('rlocation');
-    }
-
-    public function get(Request $request){
-        
     }
 }

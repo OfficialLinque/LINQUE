@@ -25,7 +25,7 @@
                 <form class="col-md-4 product">
                     <div class="card mb-4 box-shadow text-light bg-dark">
                         <div class="text-center bg-white p-0">
-                            <img style="height: 225px;" src="img/coke.png" class="rounded img-fluid">
+                        <img style="height: 225px;" src="@if($product->prodimg) {{$product->prodimg}} @else img/noimage.jpg @endif" class="rounded img-fluid">
                         </div>
                         <div class="card-body">
                             <p class="card-title lead">
@@ -161,6 +161,7 @@
                     $('#moreinfo .proddesc').text(result[0].proddesc);
                     $('#moreinfo .prodtype').text(result[0].type.prodtype);
                     $('#moreinfo .prodqty').text(result[0].prodtotalquantity);
+                    $('#moreinfo img').attr('src', (result[0].prodimg)?result[0].prodimg:'img/noimage.jpg');
 
                     $.each(result[0].package, function(key, value) {                    
                         package += '<div class="d-flex justify-content-between align-items-center ">'+

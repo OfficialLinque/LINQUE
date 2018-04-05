@@ -23,7 +23,7 @@
                 <div class="col-md-4">
                     <div class="card mb-4 box-shadow text-light bg-dark">
                         <div class="text-center bg-white p-0">
-                            <img style="height: 225px;" src="@if($product->prodimg) {{$product->prodimg}} @else img/coke.png @endif" class="rounded img-fluid">
+                            <img style="height: 225px;" src="@if($product->prodimg) {{$product->prodimg}} @else img/noimage.jpg @endif" class="rounded img-fluid">
                         </div>
                         <div class="card-body">
                             <p class="card-title lead">
@@ -56,7 +56,7 @@
                 @endforeach
             @endif
             <!-- Modal -->
-            <form id="edit-product" method="POST">
+            <form id="edit-product" method="POST" enctype="multipart/form-data">
             <div class="modal fade" id="edit" tabindex="-1" role="dialog" aria-labelledby="editLongTitle" aria-hidden="true">
                 <div class="modal-dialog modal-dialog-centered" role="document">
                     <div class="modal-content">
@@ -295,6 +295,7 @@ $(document).ready(function() {
                 $('#moreinfo .proddesc').text(result[0].proddesc);
                 $('#moreinfo .prodtype').text(result[0].type.prodtype);
                 $('#moreinfo .prodqty').text(result[0].prodtotalquantity);
+                $('#moreinfo img').attr('src', (result[0].prodimg)?result[0].prodimg:'img/noimage.jpg');
 
                 $.each(result[0].package, function(key, value) {                    
                     package += '<div class="d-flex justify-content-between align-items-center ">'+
@@ -362,12 +363,15 @@ $(document).ready(function() {
     $('form#edit-product').submit(function(e) {
         e.preventDefault();
 
-        var data = $(this).serialize();
+        var data = new FormData($(this)[0]);
 
         $.ajax({
             url: "{{route('product', 'edit')}}",
             method: "POST",
             data: data,
+            contentType: false,  
+            cache: false,  
+            processData: false,  
             dataType: "json",
             beforeSend: function() {
                 $(".se-pre-con").css("opacity", '0.6');

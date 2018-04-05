@@ -23,7 +23,15 @@ class DistributorController extends Controller
      */
     public function __construct()
     {
-        $this->middleware('auth');
+        $this->middleware(function ($request, $next) {
+           $user= auth()->user();
+
+           if($user->strtype != 2){
+                return back();
+           }
+
+           return $next($request);
+        });
     }
 
     /**
@@ -117,7 +125,7 @@ class DistributorController extends Controller
                 'packageid' => 'required',
                 'packagename' => 'required',
                 'packageprice' => 'required',
-                'pimg' => 'required',
+                'epimg' => 'required',
                 ]
             );
 
@@ -129,8 +137,8 @@ class DistributorController extends Controller
                 ]);
             }
             
-            $filename = '11eiqaJu8OucM7pVGsL5BNWof0BRx6_Cl/product.'.$request->pimg->extension();
-            $mainDisk = Storage::disk('google')->put($filename, file_get_contents($request->file('pimg')->getRealPath()));
+            $filename = '11eiqaJu8OucM7pVGsL5BNWof0BRx6_Cl/product.'.$request->epimg->extension();
+            $mainDisk = Storage::disk('google')->put($filename, file_get_contents($request->file('epimg')->getRealPath()));
             $url = Storage::disk('google')->url($filename);
             
             $data = Product::find($request->epid);
