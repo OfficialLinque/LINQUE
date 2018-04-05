@@ -35,9 +35,10 @@ class DistributorController extends Controller
     public function index()
     {
         $products = Product::where('sellerid', Auth::id())->orderBy('created_at', 'desc')->get();
+        $imgprod = Product::where('sellerid', Auth::id())->orderBy('created_at', 'desc')->first();
         $producttypes = ProductType::all();
         
-        return view('dproduct', compact('products', 'producttypes'));
+        return view('dproduct', compact('products', 'producttypes', 'imgprod'));
 
         //CODE NILA SUAREZ WA KO KABALO ANI MURAG GIEDIT NI ALLEN
         /*$temp= DB::table('products')
